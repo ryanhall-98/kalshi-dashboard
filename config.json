@@ -1,0 +1,18 @@
+{
+  "bot_enabled": true,
+  "daily_spend_limit": 25,
+  "per_trade_amount": 5,
+  "min_confidence": 70,
+  "min_edge_pct": 10,
+  "max_trades_per_day": 6,
+  "markets_enabled": {
+    "weather": true,
+    "politics": false,
+    "crypto": false,
+    "finance": false
+  },
+  "conflict_detection": true,
+  "duplicate_prevention": true,
+  "updated_at": "2026-02-12T00:00:00Z",
+  "updated_by": "dashboard"
+}
