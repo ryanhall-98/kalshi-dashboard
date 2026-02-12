@@ -615,6 +615,64 @@ function renderAll() {
   generateConfig();
 }
 
+// ===== SETTINGS PERSISTENCE (URL hash) =====
+function saveSettingsToHash() {
+  const s = {
+    e: document.getElementById('botEnabled').checked ? 1 : 0,
+    d: document.getElementById('dailyLimit').value,
+    p: document.getElementById('perTrade').value,
+    m: document.getElementById('maxTrades').value,
+    c: document.getElementById('minConf').value,
+    g: document.getElementById('minEdge').value,
+    w: document.getElementById('mktWeather').checked ? 1 : 0,
+    po: document.getElementById('mktPolitics').checked ? 1 : 0,
+    cr: document.getElementById('mktCrypto').checked ? 1 : 0,
+    f: document.getElementById('mktFinance').checked ? 1 : 0,
+    cd: document.getElementById('conflictDetect').checked ? 1 : 0,
+    dp: document.getElementById('dupePrevent').checked ? 1 : 0,
+  };
+  const params = Object.entries(s).map(([k,v]) => k+'='+v).join('&');
+  history.replaceState(null, '', '#' + params);
+}
+
+function loadSettingsFromHash() {
+  const hash = location.hash.slice(1);
+  if (!hash) return;
+  const p = {};
+  hash.split('&').forEach(pair => {
+    const [k,v] = pair.split('=');
+    p[k] = v;
+  });
+  if (p.e !== undefined) document.getElementById('botEnabled').checked = p.e === '1';
+  if (p.d) document.getElementById('dailyLimit').value = p.d;
+  if (p.p) document.getElementById('perTrade').value = p.p;
+  if (p.m) document.getElementById('maxTrades').value = p.m;
+  if (p.c) document.getElementById('minConf').value = p.c;
+  if (p.g) document.getElementById('minEdge').value = p.g;
+  if (p.w !== undefined) document.getElementById('mktWeather').checked = p.w === '1';
+  if (p.po !== undefined) document.getElementById('mktPolitics').checked = p.po === '1';
+  if (p.cr !== undefined) document.getElementById('mktCrypto').checked = p.cr === '1';
+  if (p.f !== undefined) document.getElementById('mktFinance').checked = p.f === '1';
+  if (p.cd !== undefined) document.getElementById('conflictDetect').checked = p.cd === '1';
+  if (p.dp !== undefined) document.getElementById('dupePrevent').checked = p.dp === '1';
+
+  // Update displayed values
+  document.getElementById('dailyLimitVal').textContent = '$' + (p.d || 25);
+  document.getElementById('perTradeVal').textContent = '$' + (p.p || 5);
+  document.getElementById('maxTradesVal').textContent = p.m || 6;
+  document.getElementById('minConfVal').textContent = (p.c || 70) + '%';
+  document.getElementById('minEdgeVal').textContent = (p.g || 10) + '%';
+  updateKillSwitch();
+}
+
+// Hook all settings inputs to auto-save
+document.querySelectorAll('#settings input').forEach(el => {
+  el.addEventListener('change', saveSettingsToHash);
+  el.addEventListener('input', saveSettingsToHash);
+});
+
+// Load saved settings, then render
+loadSettingsFromHash();
 renderAll();
 window.addEventListener('resize', () => renderOverview());
 </script>
