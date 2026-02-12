@@ -3,252 +3,620 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kalshi AI Bot — Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Kalshi Trading Bot — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #06080a;
-    --surface: #0d1117;
-    --surface2: #151b23;
-    --border: rgba(255,255,255,0.06);
-    --border2: rgba(255,255,255,0.1);
-    --text: #c9d1d9;
-    --text-dim: #6e7681;
-    --text-muted: #484f58;
-    --green: #00dc82;
-    --green-dim: rgba(0,220,130,0.12);
-    --red: #ff6b6b;
-    --red-dim: rgba(255,107,107,0.12);
-    --amber: #f0b429;
-    --amber-dim: rgba(240,180,41,0.12);
-    --blue: #58a6ff;
-    --blue-dim: rgba(88,166,255,0.12);
-    --mono: 'JetBrains Mono', 'Fira Code', monospace;
-    --sans: 'IBM Plex Sans', -apple-system, sans-serif;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    background: var(--bg); color: var(--text); font-family: var(--sans);
-    min-height: 100vh; -webkit-font-smoothing: antialiased;
-  }
-  body::before {
-    content:''; position:fixed; inset:0;
-    background-image: linear-gradient(rgba(255,255,255,0.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.012) 1px,transparent 1px);
-    background-size: 40px 40px; pointer-events:none; z-index:0;
-  }
-  .container { max-width:860px; margin:0 auto; padding:20px 16px 60px; position:relative; z-index:1; }
-  .header { display:flex; align-items:flex-end; justify-content:space-between; padding-bottom:20px; margin-bottom:24px; border-bottom:1px solid var(--border); }
-  .header-left .tag { font-family:var(--mono); font-size:10px; letter-spacing:3px; color:var(--text-muted); text-transform:uppercase; margin-bottom:4px; }
-  .header-left h1 { font-family:var(--mono); font-size:22px; font-weight:700; color:#fff; display:flex; align-items:center; gap:10px; }
-  .badge { font-size:9px; padding:2px 8px; border-radius:3px; font-weight:600; letter-spacing:1.5px; font-family:var(--mono); }
-  .badge-sim { background:var(--amber-dim); color:var(--amber); }
-  .badge-live { background:var(--green-dim); color:var(--green); }
-  .header-right { text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
-  .update-time { font-family:var(--mono); font-size:10px; color:var(--text-muted); }
-  .sync-btn { font-family:var(--mono); font-size:10px; padding:5px 12px; background:var(--surface2); border:1px solid var(--border2); border-radius:4px; color:var(--text-dim); cursor:pointer; transition:all 0.15s; }
-  .sync-btn:hover { background:rgba(255,255,255,0.08); color:var(--text); border-color:rgba(255,255,255,0.15); }
-  .pnl-hero { text-align:center; padding:28px 0 32px; margin-bottom:24px; position:relative; }
-  .pnl-hero::after { content:''; position:absolute; bottom:0; left:20%; right:20%; height:1px; background:linear-gradient(90deg,transparent,var(--border2),transparent); }
-  .pnl-label { font-family:var(--mono); font-size:10px; letter-spacing:3px; color:var(--text-muted); text-transform:uppercase; margin-bottom:10px; }
-  .pnl-value { font-family:var(--mono); font-size:56px; font-weight:800; line-height:1; letter-spacing:-2px; }
-  .pnl-sub { font-family:var(--mono); font-size:13px; margin-top:8px; opacity:0.7; }
-  .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:24px; }
-  @media(max-width:600px) { .stats-grid{grid-template-columns:repeat(2,1fr);} .pnl-value{font-size:40px;} .header-left h1{font-size:17px;} }
-  .stat-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:14px 12px; transition:border-color 0.2s; }
-  .stat-card:hover { border-color:var(--border2); }
-  .stat-label { font-family:var(--mono); font-size:9px; letter-spacing:2px; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px; }
-  .stat-value { font-family:var(--mono); font-size:22px; font-weight:700; line-height:1.1; }
-  .stat-sub { font-family:var(--mono); font-size:10px; color:var(--text-muted); margin-top:4px; }
-  .chart-box { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:16px; margin-bottom:24px; overflow-x:auto; }
-  .chart-title { font-family:var(--mono); font-size:10px; letter-spacing:2px; color:var(--text-muted); text-transform:uppercase; margin-bottom:12px; }
-  .tabs { display:flex; border-bottom:1px solid var(--border); margin-bottom:16px; }
-  .tab { font-family:var(--mono); font-size:11px; letter-spacing:1.5px; text-transform:uppercase; padding:10px 18px; background:none; border:none; border-bottom:2px solid transparent; color:var(--text-muted); cursor:pointer; transition:all 0.15s; }
-  .tab:hover { color:var(--text-dim); }
-  .tab.active { color:#fff; border-bottom-color:var(--green); }
-  .trade-row { display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border-radius:4px; transition:background 0.1s; }
-  .trade-row:hover { background:rgba(255,255,255,0.02); }
-  .trade-row:nth-child(even) { background:rgba(255,255,255,0.015); }
-  .trade-info { flex:1; min-width:0; }
-  .trade-question { font-size:12px; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .trade-meta { font-family:var(--mono); font-size:10px; color:var(--text-muted); margin-top:2px; }
-  .trade-result { text-align:right; min-width:80px; margin-left:12px; }
-  .trade-pnl { font-family:var(--mono); font-size:13px; font-weight:600; }
-  .trade-tag { font-family:var(--mono); font-size:9px; opacity:0.6; }
-  .pending-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:14px 16px; margin-bottom:8px; transition:border-color 0.2s; }
-  .pending-card:hover { border-color:var(--border2); }
-  .pending-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; }
-  .pending-ticker { font-family:var(--mono); font-size:10px; color:var(--text-muted); margin-top:3px; }
-  .pending-stats { display:flex; gap:16px; font-family:var(--mono); font-size:10px; color:var(--text-dim); margin-bottom:10px; flex-wrap:wrap; }
-  .pending-actions { display:flex; gap:6px; }
-  .btn-won,.btn-lost { font-family:var(--mono); font-size:10px; padding:4px 14px; border-radius:4px; cursor:pointer; transition:all 0.15s; font-weight:500; }
-  .btn-won { background:var(--green-dim); border:1px solid rgba(0,220,130,0.25); color:var(--green); }
-  .btn-won:hover { background:rgba(0,220,130,0.2); border-color:var(--green); }
-  .btn-lost { background:var(--red-dim); border:1px solid rgba(255,107,107,0.25); color:var(--red); }
-  .btn-lost:hover { background:rgba(255,107,107,0.2); border-color:var(--red); }
-  .day-row { display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border-radius:4px; }
-  .day-row:nth-child(even) { background:rgba(255,255,255,0.015); }
-  .day-date { font-family:var(--mono); font-size:12px; color:var(--text); min-width:70px; }
-  .day-stats { display:flex; gap:14px; font-family:var(--mono); font-size:11px; align-items:center; }
-  .day-pnl { font-family:var(--mono); font-size:13px; font-weight:600; min-width:80px; text-align:right; }
-  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; z-index:100; padding:20px; }
-  .modal { background:var(--surface); border:1px solid var(--border2); border-radius:12px; padding:24px; width:100%; max-width:520px; }
-  .modal h3 { font-family:var(--mono); font-size:14px; font-weight:600; color:#fff; margin-bottom:8px; }
-  .modal p { font-size:12px; color:var(--text-dim); margin-bottom:16px; line-height:1.6; }
-  .modal textarea { width:100%; height:160px; background:var(--bg); border:1px solid var(--border2); border-radius:6px; padding:12px; font-family:var(--mono); font-size:11px; color:var(--text); resize:vertical; margin-bottom:12px; }
-  .modal textarea:focus { outline:none; border-color:var(--green); }
-  .modal-btns { display:flex; gap:8px; justify-content:flex-end; }
-  .modal-btn { font-family:var(--mono); font-size:11px; padding:6px 16px; border-radius:4px; cursor:pointer; transition:all 0.15s; }
-  .modal-btn-cancel { background:none; border:1px solid var(--border2); color:var(--text-dim); }
-  .modal-btn-save { background:var(--green); border:1px solid var(--green); color:var(--bg); font-weight:600; }
-  .modal-btn-save:hover { opacity:0.9; }
-  .empty { text-align:center; padding:48px 20px; color:var(--text-muted); font-size:13px; }
-  .footer { margin-top:40px; padding-top:16px; border-top:1px solid var(--border); text-align:center; }
-  .footer code { font-family:var(--mono); font-size:10px; color:var(--text-muted); background:var(--surface); padding:2px 6px; border-radius:3px; display:inline-block; margin:4px 0; }
-  .footer p { font-size:10px; color:var(--text-muted); margin-top:6px; }
-  .note-box { background:var(--surface); border:1px solid var(--border); border-left:3px solid var(--amber); border-radius:4px; padding:12px 14px; margin-bottom:20px; font-size:11px; color:var(--text-dim); line-height:1.6; }
-  .note-box strong { color:var(--amber); }
-  @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
-  .animate-in { animation:fadeUp 0.4s ease forwards; opacity:0; }
-  .delay-1{animation-delay:0.05s} .delay-2{animation-delay:0.1s} .delay-3{animation-delay:0.15s}
-  .delay-4{animation-delay:0.2s} .delay-5{animation-delay:0.25s} .delay-6{animation-delay:0.3s}
-  .pulse-dot { width:6px; height:6px; border-radius:50%; display:inline-block; margin-right:4px; animation:pulse 2s ease infinite; }
-  @keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+:root {
+  --bg: #0a0e17;
+  --surface: #111827;
+  --surface2: #1a2235;
+  --border: #1e2a3a;
+  --text: #e2e8f0;
+  --text2: #8896ab;
+  --green: #22c55e;
+  --green-bg: rgba(34,197,94,0.1);
+  --red: #ef4444;
+  --red-bg: rgba(239,68,68,0.1);
+  --blue: #3b82f6;
+  --blue-bg: rgba(59,130,246,0.1);
+  --yellow: #eab308;
+  --yellow-bg: rgba(234,179,8,0.1);
+  --purple: #a855f7;
+  --purple-bg: rgba(168,85,247,0.1);
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:var(--sans); min-height:100vh; }
+.app { max-width:960px; margin:0 auto; padding:16px; }
+
+/* Header */
+.header { display:flex; align-items:center; justify-content:space-between; padding:16px 0; border-bottom:1px solid var(--border); margin-bottom:20px; }
+.header h1 { font-family:var(--mono); font-size:18px; font-weight:700; letter-spacing:-0.5px; }
+.header h1 span { color:var(--blue); }
+.bot-status { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text2); font-family:var(--mono); }
+.status-dot { width:8px; height:8px; border-radius:50%; animation: pulse 2s infinite; }
+.status-dot.on { background:var(--green); box-shadow:0 0 8px var(--green); }
+.status-dot.off { background:var(--red); box-shadow:0 0 8px var(--red); animation:none; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.4} }
+
+/* Nav Tabs */
+.tabs { display:flex; gap:2px; background:var(--surface); border-radius:10px; padding:3px; margin-bottom:20px; }
+.tab { flex:1; padding:10px; text-align:center; font-size:13px; font-weight:500; border-radius:8px; cursor:pointer; color:var(--text2); transition:all 0.2s; }
+.tab:hover { color:var(--text); }
+.tab.active { background:var(--surface2); color:var(--text); box-shadow:0 1px 3px rgba(0,0,0,0.3); }
+.panel { display:none; }
+.panel.active { display:block; }
+
+/* Stats Grid */
+.stats { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:20px; }
+@media(min-width:600px) { .stats { grid-template-columns:repeat(4,1fr); } }
+.stat { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; }
+.stat-label { font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--text2); margin-bottom:6px; }
+.stat-value { font-family:var(--mono); font-size:22px; font-weight:700; }
+.stat-value.green { color:var(--green); }
+.stat-value.red { color:var(--red); }
+.stat-sub { font-size:11px; color:var(--text2); margin-top:4px; font-family:var(--mono); }
+
+/* Big PnL */
+.pnl-hero { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:24px; text-align:center; margin-bottom:20px; }
+.pnl-amount { font-family:var(--mono); font-size:42px; font-weight:700; letter-spacing:-1px; }
+.pnl-label { font-size:12px; color:var(--text2); margin-top:4px; text-transform:uppercase; letter-spacing:1px; }
+
+/* Chart */
+.chart-box { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; margin-bottom:20px; }
+.chart-title { font-size:13px; color:var(--text2); margin-bottom:12px; }
+.chart-canvas { width:100%; height:180px; }
+
+/* Trade Table */
+.trades-section { background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:20px; }
+.trades-header { padding:14px 16px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+.trades-header h3 { font-size:14px; font-weight:600; }
+.trade-row { display:grid; grid-template-columns:1fr 70px 70px 70px; gap:8px; padding:12px 16px; border-bottom:1px solid var(--border); align-items:center; font-size:13px; }
+.trade-row:last-child { border-bottom:none; }
+.trade-row.header { font-size:11px; color:var(--text2); text-transform:uppercase; letter-spacing:0.5px; }
+.trade-market { font-family:var(--mono); font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.trade-tag { display:inline-block; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; font-family:var(--mono); }
+.trade-tag.win { background:var(--green-bg); color:var(--green); }
+.trade-tag.loss { background:var(--red-bg); color:var(--red); }
+.trade-tag.pending { background:var(--yellow-bg); color:var(--yellow); }
+.trade-pnl { font-family:var(--mono); font-weight:600; text-align:right; }
+
+/* Sync Bar */
+.sync-bar { display:flex; gap:8px; margin-bottom:20px; }
+.sync-btn { background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:10px 16px; border-radius:8px; cursor:pointer; font-size:13px; font-family:var(--sans); transition:all 0.15s; }
+.sync-btn:hover { background:var(--border); }
+.sync-btn.primary { background:var(--blue); border-color:var(--blue); }
+.sync-btn.primary:hover { background:#2563eb; }
+
+/* Settings Panel */
+.settings-group { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px; margin-bottom:16px; }
+.settings-group h3 { font-size:14px; font-weight:600; margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--border); }
+.setting-row { margin-bottom:20px; }
+.setting-row:last-child { margin-bottom:0; }
+.setting-label { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.setting-label span { font-size:13px; }
+.setting-label .val { font-family:var(--mono); font-weight:700; color:var(--blue); font-size:15px; }
+.setting-hint { font-size:11px; color:var(--text2); margin-top:4px; }
+.rec-badge { font-size:10px; background:var(--purple-bg); color:var(--purple); padding:2px 6px; border-radius:4px; font-family:var(--mono); font-weight:600; }
+
+/* Range Slider */
+.slider-wrap { position:relative; padding:0 0 4px; }
+input[type=range] { -webkit-appearance:none; width:100%; height:6px; border-radius:3px; background:var(--surface2); outline:none; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--blue); cursor:pointer; box-shadow:0 0 6px rgba(59,130,246,0.4); }
+.rec-marker { position:absolute; top:-2px; width:2px; height:10px; background:var(--purple); border-radius:1px; pointer-events:none; }
+
+/* Toggle */
+.toggle-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border); }
+.toggle-row:last-child { border-bottom:none; }
+.toggle-label { font-size:13px; }
+.toggle { position:relative; width:44px; height:24px; cursor:pointer; }
+.toggle input { opacity:0; width:0; height:0; }
+.toggle .slider { position:absolute; inset:0; background:var(--surface2); border-radius:12px; transition:0.2s; border:1px solid var(--border); }
+.toggle .slider:before { content:''; position:absolute; width:18px; height:18px; border-radius:50%; background:var(--text2); left:2px; top:2px; transition:0.2s; }
+.toggle input:checked + .slider { background:var(--blue); border-color:var(--blue); }
+.toggle input:checked + .slider:before { transform:translateX(20px); background:#fff; }
+
+/* Kill Switch */
+.kill-switch { display:flex; align-items:center; justify-content:space-between; background:var(--surface); border:2px solid var(--border); border-radius:10px; padding:16px 20px; margin-bottom:16px; }
+.kill-switch.on { border-color:var(--green); }
+.kill-switch.off { border-color:var(--red); }
+.kill-label { font-size:15px; font-weight:600; }
+.kill-status { font-family:var(--mono); font-size:13px; }
+
+/* Config output */
+.config-output { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:16px; font-family:var(--mono); font-size:12px; color:var(--text2); white-space:pre; overflow-x:auto; margin-top:16px; line-height:1.6; }
+.copy-config { margin-top:10px; }
+
+/* Sync modal */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:100; align-items:center; justify-content:center; }
+.modal-overlay.show { display:flex; }
+.modal { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:24px; max-width:500px; width:90%; }
+.modal h3 { margin-bottom:12px; }
+.modal textarea { width:100%; height:200px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:12px; font-family:var(--mono); font-size:12px; color:var(--text); resize:none; }
+.modal-actions { display:flex; gap:8px; margin-top:12px; justify-content:flex-end; }
 </style>
 </head>
 <body>
-<div class="container" id="app"></div>
-<script>
-const STORAGE_KEY = 'kalshi_bot_trades_v3';
+<div class="app">
 
-// REAL TRADES from VPS as of Feb 12 2026
-// Resolved against actual weather: NYC high 35°F, Chicago high 39°F
-const REAL_TRADES = [
-  {ticker:"POLY-SHUTDOWN",question:"Another US government shutdown by February 14?",category:"politics",side:"YES",price:0.735,contracts:6,cost:5.00,potential_profit:1.80,edge:0.115,confidence:70,simulation:true,timestamp:1739245443,result:null},
-  {ticker:"POLY-HULIAIPOLE",question:"Will Russia capture all of Huliaipole by Feb 28?",category:"politics",side:"NO",price:0.52,contracts:9,cost:5.00,potential_profit:4.62,edge:0.33,confidence:65,simulation:true,timestamp:1739245457,result:null},
-  {ticker:"KXHIGHNY-26FEB12-B38.5",question:"NYC high temp 38-39°F on Feb 12",category:"weather",side:"YES",price:0.12,contracts:49,cost:5.88,potential_profit:43.12,edge:0.13,confidence:80,simulation:true,timestamp:1739319543,result:"loss"},
-  {ticker:"KXHIGHCHI-26FEB12-T38",question:"Chicago high temp <38°F on Feb 12",category:"weather",side:"YES",price:0.22,contracts:28,cost:6.16,potential_profit:21.84,edge:0.13,confidence:75,simulation:true,timestamp:1739319546,result:"loss"},
-  {ticker:"KXHIGHCHI-26FEB12-B42.5",question:"Chicago high temp 42-43°F on Feb 12",category:"weather",side:"YES",price:0.12,contracts:52,cost:6.24,potential_profit:45.76,edge:0.13,confidence:85,simulation:true,timestamp:1739319547,result:"loss"},
-  {ticker:"KXHIGHNY-26FEB12-B38.5",question:"NYC high temp 38-39°F on Feb 12",category:"weather",side:"YES",price:0.12,contracts:43,cost:5.16,potential_profit:37.84,edge:0.13,confidence:70,simulation:true,timestamp:1739319870,result:"loss"},
-  {ticker:"KXHIGHNY-26FEB12-B34.5",question:"NYC high temp 34-35°F on Feb 12",category:"weather",side:"YES",price:0.30,contracts:25,cost:7.50,potential_profit:17.50,edge:0.15,confidence:75,simulation:true,timestamp:1739319872,result:"win"},
-  {ticker:"KXHIGHNY-26FEB12-B38.5",question:"NYC high temp 38-39°F on Feb 12",category:"weather",side:"YES",price:0.12,contracts:32,cost:3.84,potential_profit:28.16,edge:0.08,confidence:85,simulation:true,timestamp:1739320308,result:"loss"},
-  {ticker:"KXHIGHNY-26FEB12-B34.5",question:"NYC high temp 34-35°F on Feb 12",category:"weather",side:"YES",price:0.30,contracts:21,cost:6.30,potential_profit:14.70,edge:0.15,confidence:65,simulation:true,timestamp:1739320310,result:"win"},
-  {ticker:"KXHIGHNY-26FEB12-B38.5",question:"NYC high temp 38-39°F on Feb 12",category:"weather",side:"YES",price:0.12,contracts:49,cost:5.88,potential_profit:43.12,edge:0.13,confidence:80,simulation:true,timestamp:1739320434,result:"loss"},
-  {ticker:"KXHIGHNY-26FEB12-B34.5",question:"NYC high temp 34-35°F on Feb 12",category:"weather",side:"YES",price:0.30,contracts:28,cost:8.40,potential_profit:19.60,edge:0.15,confidence:85,simulation:true,timestamp:1739320437,result:"win"},
-  {ticker:"KXHIGHNY-26FEB12-B38.5",question:"NYC high temp 38-39°F on Feb 12",category:"weather",side:"YES",price:0.12,contracts:52,cost:6.24,potential_profit:45.76,edge:0.13,confidence:85,simulation:true,timestamp:1739320560,result:"loss"},
-  {ticker:"KXHIGHNY-26FEB12-B34.5",question:"NYC high temp 34-35°F on Feb 12",category:"weather",side:"YES",price:0.30,contracts:17,cost:5.10,potential_profit:11.90,edge:0.10,confidence:75,simulation:true,timestamp:1739320776,result:"win"},
-  {ticker:"KXHIGHCHI-26FEB12-B42.5",question:"Chicago high temp 42-43°F on Feb 12",category:"weather",side:"YES",price:0.17,contracts:41,cost:6.97,potential_profit:34.03,edge:0.18,confidence:70,simulation:true,timestamp:1739321025,result:"loss"},
+<!-- Header -->
+<div class="header">
+  <h1>KALSHI <span>BOT</span></h1>
+  <div class="bot-status">
+    <div class="status-dot on" id="statusDot"></div>
+    <span id="statusText">SIMULATION</span>
+  </div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+  <div class="tab active" data-tab="overview">Overview</div>
+  <div class="tab" data-tab="trades">Trades</div>
+  <div class="tab" data-tab="settings">⚙ Settings</div>
+</div>
+
+<!-- OVERVIEW PANEL -->
+<div class="panel active" id="overview">
+  <div class="pnl-hero">
+    <div class="pnl-amount" id="pnlAmount">$0.00</div>
+    <div class="pnl-label">Simulated P&L</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Win Rate</div>
+      <div class="stat-value" id="winRate">—</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Total Trades</div>
+      <div class="stat-value" id="totalTrades">0</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Pending</div>
+      <div class="stat-value" id="pendingCount">0</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Total Invested</div>
+      <div class="stat-value" id="totalInvested">$0</div>
+    </div>
+  </div>
+
+  <div class="chart-box">
+    <div class="chart-title">Cumulative P&L</div>
+    <canvas class="chart-canvas" id="pnlChart"></canvas>
+  </div>
+
+  <div class="sync-bar">
+    <button class="sync-btn primary" onclick="openSyncModal()">⬆ Sync Trades</button>
+    <button class="sync-btn" onclick="exportData()">⬇ Export</button>
+    <button class="sync-btn" onclick="clearData()">✕ Clear</button>
+  </div>
+</div>
+
+<!-- TRADES PANEL -->
+<div class="panel" id="trades">
+  <div class="trades-section">
+    <div class="trades-header">
+      <h3>All Trades</h3>
+    </div>
+    <div class="trade-row header">
+      <span>Market</span><span>Cost</span><span>Result</span><span style="text-align:right">P&L</span>
+    </div>
+    <div id="tradesList"></div>
+  </div>
+</div>
+
+<!-- SETTINGS PANEL -->
+<div class="panel" id="settings">
+  <!-- Kill Switch -->
+  <div class="kill-switch on" id="killSwitch">
+    <div>
+      <div class="kill-label">Bot Enabled</div>
+      <div class="kill-status" id="killStatus">Trading active</div>
+    </div>
+    <label class="toggle">
+      <input type="checkbox" id="botEnabled" checked onchange="updateKillSwitch()">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <!-- Trading Limits -->
+  <div class="settings-group">
+    <h3>Trading Limits</h3>
+
+    <div class="setting-row">
+      <div class="setting-label">
+        <span>Daily Spend Cap</span>
+        <span class="val" id="dailyLimitVal">$25</span>
+      </div>
+      <div class="slider-wrap">
+        <input type="range" min="5" max="200" value="25" step="5" id="dailyLimit" oninput="updateSlider('dailyLimit','$')">
+        <div class="rec-marker" style="left:calc((25 - 5) / (200 - 5) * 100%)"></div>
+      </div>
+      <div class="setting-hint">Recommended: <span class="rec-badge">$25</span> — Max total spent per day across all trades</div>
+    </div>
+
+    <div class="setting-row">
+      <div class="setting-label">
+        <span>Per Trade Size</span>
+        <span class="val" id="perTradeVal">$5</span>
+      </div>
+      <div class="slider-wrap">
+        <input type="range" min="1" max="50" value="5" step="1" id="perTrade" oninput="updateSlider('perTrade','$')">
+        <div class="rec-marker" style="left:calc((5 - 1) / (50 - 1) * 100%)"></div>
+      </div>
+      <div class="setting-hint">Recommended: <span class="rec-badge">$5</span> — Amount risked on each individual trade</div>
+    </div>
+
+    <div class="setting-row">
+      <div class="setting-label">
+        <span>Max Trades Per Day</span>
+        <span class="val" id="maxTradesVal">6</span>
+      </div>
+      <div class="slider-wrap">
+        <input type="range" min="1" max="20" value="6" step="1" id="maxTrades" oninput="updateSlider('maxTrades','')">
+        <div class="rec-marker" style="left:calc((6 - 1) / (20 - 1) * 100%)"></div>
+      </div>
+      <div class="setting-hint">Recommended: <span class="rec-badge">6</span> — Prevents over-trading on a single day</div>
+    </div>
+  </div>
+
+  <!-- AI Thresholds -->
+  <div class="settings-group">
+    <h3>AI Thresholds</h3>
+
+    <div class="setting-row">
+      <div class="setting-label">
+        <span>Min Confidence</span>
+        <span class="val" id="minConfVal">70%</span>
+      </div>
+      <div class="slider-wrap">
+        <input type="range" min="30" max="95" value="70" step="5" id="minConf" oninput="updateSlider('minConf','%')">
+        <div class="rec-marker" style="left:calc((70 - 30) / (95 - 30) * 100%)"></div>
+      </div>
+      <div class="setting-hint">Recommended: <span class="rec-badge">70%</span> — Claude must be this confident to trigger a trade</div>
+    </div>
+
+    <div class="setting-row">
+      <div class="setting-label">
+        <span>Min Edge</span>
+        <span class="val" id="minEdgeVal">10%</span>
+      </div>
+      <div class="slider-wrap">
+        <input type="range" min="3" max="30" value="10" step="1" id="minEdge" oninput="updateSlider('minEdge','%')">
+        <div class="rec-marker" style="left:calc((10 - 3) / (30 - 3) * 100%)"></div>
+      </div>
+      <div class="setting-hint">Recommended: <span class="rec-badge">10%</span> — Gap between Claude's probability and market price needed to trade</div>
+    </div>
+  </div>
+
+  <!-- Markets -->
+  <div class="settings-group">
+    <h3>Enabled Markets</h3>
+    <div class="toggle-row">
+      <span class="toggle-label">🌤 Weather</span>
+      <label class="toggle"><input type="checkbox" id="mktWeather" checked><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+      <span class="toggle-label">🏛 Politics</span>
+      <label class="toggle"><input type="checkbox" id="mktPolitics"><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+      <span class="toggle-label">₿ Crypto</span>
+      <label class="toggle"><input type="checkbox" id="mktCrypto"><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+      <span class="toggle-label">📈 Finance</span>
+      <label class="toggle"><input type="checkbox" id="mktFinance"><span class="slider"></span></label>
+    </div>
+  </div>
+
+  <!-- Safety -->
+  <div class="settings-group">
+    <h3>Safety</h3>
+    <div class="toggle-row">
+      <span class="toggle-label">Conflict Detection <span style="color:var(--text2);font-size:11px">— prevents contradictory bets</span></span>
+      <label class="toggle"><input type="checkbox" id="conflictDetect" checked><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+      <span class="toggle-label">Duplicate Prevention <span style="color:var(--text2);font-size:11px">— prevents same ticker twice</span></span>
+      <label class="toggle"><input type="checkbox" id="dupePrevent" checked><span class="slider"></span></label>
+    </div>
+  </div>
+
+  <!-- Generated Config -->
+  <div class="settings-group">
+    <h3>Generated Config</h3>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:10px;">Copy this config and push to your GitHub repo. The bot pulls it before each cycle.</p>
+    <div class="config-output" id="configOutput"></div>
+    <div style="display:flex;gap:8px;margin-top:10px;">
+      <button class="sync-btn primary" onclick="copyConfig()">📋 Copy Config</button>
+      <button class="sync-btn" onclick="copySshCommand()">📋 Copy SSH Push Command</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- Sync Modal -->
+<div class="modal-overlay" id="syncModal">
+  <div class="modal">
+    <h3>Sync Trade Data</h3>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:10px;">Run this on your Mac, then paste the output below:</p>
+    <div class="config-output" style="margin-bottom:12px;font-size:11px;">ssh root@174.138.84.53 'cat /root/polymarket-ai-bot/data/trades.json'</div>
+    <textarea id="syncInput" placeholder="Paste trades.json content here..."></textarea>
+    <div class="modal-actions">
+      <button class="sync-btn" onclick="closeSyncModal()">Cancel</button>
+      <button class="sync-btn primary" onclick="importTrades()">Import</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== TRADE DATA =====
+// Real trades from VPS as of Feb 11, 2026
+const DEFAULT_TRADES = [
+  {id:1,ticker:"KXHIGHNY-26FEB12-B38.5",market:"NYC High 38-39°F Feb 12",side:"YES",price:0.12,qty:32,cost:3.84,potential:28.16,edge:0.08,confidence:0.75,ts:"2026-02-11T20:20:14",result:"loss",pnl:-3.84},
+  {id:2,ticker:"KXHIGHNY-26FEB12-B34.5",market:"NYC High 34-35°F Feb 12",side:"YES",price:0.30,qty:21,cost:6.30,potential:14.70,edge:0.15,confidence:0.80,ts:"2026-02-11T20:20:14",result:"win",pnl:14.70},
+  {id:3,ticker:"KXHIGHCHI-26FEB12-T38",market:"Chicago High <38°F Feb 12",side:"YES",price:0.22,qty:28,cost:6.16,potential:21.84,edge:0.13,confidence:0.75,ts:"2026-02-11T20:20:14",result:"loss",pnl:-6.16},
+  {id:4,ticker:"KXHIGHCHI-26FEB12-B42.5",market:"Chicago High 42-43°F Feb 12",side:"YES",price:0.12,qty:52,cost:6.24,potential:45.76,edge:0.13,confidence:0.70,ts:"2026-02-11T20:20:14",result:"loss",pnl:-6.24},
+  {id:5,ticker:"KXHIGHNY-26FEB12-B38.5",market:"NYC High 38-39°F Feb 12 (dup)",side:"YES",price:0.12,qty:32,cost:3.84,potential:28.16,edge:0.08,confidence:0.75,ts:"2026-02-11T20:22:14",result:"loss",pnl:-3.84},
+  {id:6,ticker:"KXHIGHNY-26FEB12-B34.5",market:"NYC High 34-35°F Feb 12 (dup)",side:"YES",price:0.30,qty:21,cost:6.30,potential:14.70,edge:0.15,confidence:0.80,ts:"2026-02-11T20:22:14",result:"win",pnl:14.70},
+  {id:7,ticker:"KXHIGHCHI-26FEB12-T38",market:"Chicago High <38°F Feb 12 (dup)",side:"YES",price:0.22,qty:28,cost:6.16,potential:21.84,edge:0.13,confidence:0.75,ts:"2026-02-11T20:22:14",result:"loss",pnl:-6.16},
+  {id:8,ticker:"KXHIGHNY-26FEB12-B38.5",market:"NYC High 38-39°F Feb 12",side:"YES",price:0.12,qty:32,cost:3.84,potential:28.16,edge:0.08,confidence:0.75,ts:"2026-02-12T01:20:14",result:"loss",pnl:-3.84},
+  {id:9,ticker:"KXHIGHNY-26FEB12-B34.5",market:"NYC High 34-35°F Feb 12",side:"YES",price:0.30,qty:21,cost:6.30,potential:14.70,edge:0.15,confidence:0.80,ts:"2026-02-12T01:20:14",result:"win",pnl:14.70},
+  {id:10,ticker:"KXHIGHCHI-26FEB12-T38",market:"Chicago High <38°F Feb 12",side:"YES",price:0.22,qty:28,cost:6.16,potential:21.84,edge:0.13,confidence:0.75,ts:"2026-02-12T01:20:14",result:"loss",pnl:-6.16},
+  {id:11,ticker:"KXHIGHCHI-26FEB12-B42.5",market:"Chicago High 42-43°F Feb 12",side:"YES",price:0.12,qty:52,cost:6.24,potential:45.76,edge:0.13,confidence:0.70,ts:"2026-02-12T01:20:14",result:"loss",pnl:-6.24},
+  {id:12,ticker:"KXHIGHNY-26FEB12-B38.5",market:"NYC High 38-39°F Feb 12",side:"YES",price:0.12,qty:32,cost:3.84,potential:28.16,edge:0.08,confidence:0.75,ts:"2026-02-12T01:22:14",result:"loss",pnl:-3.84},
+  {id:13,ticker:"KXHIGHNY-26FEB12-B34.5",market:"NYC High 34-35°F Feb 12",side:"YES",price:0.30,qty:21,cost:6.30,potential:14.70,edge:0.15,confidence:0.80,ts:"2026-02-12T01:22:14",result:"win",pnl:14.70},
+  {id:14,ticker:"KXHIGHCHI-26FEB12-T38",market:"Chicago High <38°F Feb 12",side:"YES",price:0.22,qty:28,cost:6.16,potential:21.84,edge:0.13,confidence:0.75,ts:"2026-02-12T01:22:14",result:"loss",pnl:-6.16},
 ];
 
-function loadTrades(){try{const r=localStorage.getItem(STORAGE_KEY);if(r){const p=JSON.parse(r);if(Array.isArray(p)&&p.length>0)return p;}}catch(e){}localStorage.setItem(STORAGE_KEY,JSON.stringify(REAL_TRADES));return REAL_TRADES;}
-function saveTrades(t){localStorage.setItem(STORAGE_KEY,JSON.stringify(t));}
+// ===== STATE =====
+let trades = JSON.parse(localStorage.getItem('kalshi_trades') || 'null') || DEFAULT_TRADES;
 
-function processTrades(trades){
-  const resolved=trades.filter(t=>t.result),pending=trades.filter(t=>!t.result);
-  let totalInvested=0,totalReturned=0,wins=0,losses=0;
-  resolved.forEach(t=>{totalInvested+=t.cost;if(t.result==='win'){totalReturned+=t.contracts;wins++;}if(t.result==='loss'){losses++;}});
-  const totalPnL=totalReturned-totalInvested;
-  const roi=totalInvested>0?(totalPnL/totalInvested)*100:0;
-  const winRate=resolved.length>0?(wins/resolved.length)*100:0;
-  const pendingCost=pending.reduce((s,t)=>s+t.cost,0);
-  const pendingUpside=pending.reduce((s,t)=>s+t.potential_profit,0);
-  const byDay={};
-  trades.forEach(t=>{const d=new Date(t.timestamp*1000).toLocaleDateString('en-US',{month:'short',day:'numeric'});if(!byDay[d])byDay[d]={day:d,invested:0,returned:0,trades:0,wins:0,losses:0,pending:0,ts:t.timestamp};byDay[d].trades++;if(t.result==='win'){byDay[d].invested+=t.cost;byDay[d].returned+=t.contracts;byDay[d].wins++;}else if(t.result==='loss'){byDay[d].invested+=t.cost;byDay[d].losses++;}else{byDay[d].pending++;}});
-  return{totalPnL,roi,winRate,wins,losses,pendingCount:pending.length,totalInvested,totalReturned,pendingCost,pendingUpside,byDay:Object.values(byDay).sort((a,b)=>b.ts-a.ts),trades,resolved,pending};
+function saveTrades() { localStorage.setItem('kalshi_trades', JSON.stringify(trades)); }
+
+// ===== TABS =====
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.tab).classList.add('active');
+    if (t.dataset.tab === 'settings') generateConfig();
+  });
+});
+
+// ===== OVERVIEW =====
+function renderOverview() {
+  const resolved = trades.filter(t => t.result === 'win' || t.result === 'loss');
+  const pending = trades.filter(t => t.result === 'pending');
+  const wins = resolved.filter(t => t.result === 'win');
+  const totalPnl = resolved.reduce((s, t) => s + (t.pnl || 0), 0);
+  const totalCost = trades.reduce((s, t) => s + (t.cost || 0), 0);
+
+  const pnlEl = document.getElementById('pnlAmount');
+  pnlEl.textContent = (totalPnl >= 0 ? '+' : '') + '$' + totalPnl.toFixed(2);
+  pnlEl.className = 'pnl-amount ' + (totalPnl >= 0 ? 'green' : 'red');
+
+  document.getElementById('winRate').textContent = resolved.length ? Math.round(wins.length / resolved.length * 100) + '%' : '—';
+  document.getElementById('winRate').className = 'stat-value ' + (wins.length / resolved.length >= 0.5 ? 'green' : 'red');
+  document.getElementById('totalTrades').textContent = trades.length;
+  document.getElementById('pendingCount').textContent = pending.length;
+  document.getElementById('totalInvested').textContent = '$' + totalCost.toFixed(2);
+
+  drawChart(resolved);
 }
 
-function renderChart(byDay){
-  if(!byDay.length)return'<div class="empty">No data</div>';
-  const rev=[...byDay].reverse();let cum=0;
-  const pts=rev.map(d=>{cum+=(d.returned-d.invested);return{...d,cumPnL:cum};});
-  const maxP=Math.max(...pts.map(p=>p.cumPnL),0.01),minP=Math.min(...pts.map(p=>p.cumPnL),-0.01);
-  const range=(maxP-minP)||1,h=130,w=Math.max(pts.length*120,320);
-  const coords=pts.map((p,i)=>{const x=(i/Math.max(pts.length-1,1))*(w-50)+25;const y=h-15-((p.cumPnL-minP)/range)*(h-40);return{x,y,...p};});
-  const zeroY=h-15-((0-minP)/range)*(h-40);
-  const lineD=coords.map((c,i)=>`${i===0?'M':'L'} ${c.x} ${c.y}`).join(' ');
-  const areaD=lineD+` L ${coords[coords.length-1].x} ${h-5} L ${coords[0].x} ${h-5} Z`;
-  const color=cum>=0?'var(--green)':'var(--red)';
-  let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="display:block;">`;
-  s+=`<defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity="0.12"/><stop offset="100%" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>`;
-  s+=`<line x1="25" y1="${zeroY}" x2="${w-25}" y2="${zeroY}" stroke="rgba(255,255,255,0.06)" stroke-dasharray="4 4"/>`;
-  s+=`<path d="${areaD}" fill="url(#ag)"/><path d="${lineD}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
-  coords.forEach(c=>{const col=c.cumPnL>=0?'var(--green)':'var(--red)';s+=`<circle cx="${c.x}" cy="${c.y}" r="3.5" fill="var(--bg)" stroke="${col}" stroke-width="2"/>`;s+=`<text x="${c.x}" y="${c.y-10}" text-anchor="middle" fill="${col}" font-size="9" font-family="JetBrains Mono" font-weight="600">$${c.cumPnL.toFixed(2)}</text>`;s+=`<text x="${c.x}" y="${h}" text-anchor="middle" fill="var(--text-muted)" font-size="8.5" font-family="JetBrains Mono">${c.day}</text>`;});
-  s+=`</svg>`;return s;
+function drawChart(resolved) {
+  const canvas = document.getElementById('pnlChart');
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth * 2;
+  canvas.height = canvas.offsetHeight * 2;
+  ctx.scale(2, 2);
+  const W = canvas.offsetWidth, H = canvas.offsetHeight;
+  ctx.clearRect(0, 0, W, H);
+
+  if (resolved.length < 2) {
+    ctx.fillStyle = '#8896ab';
+    ctx.font = '13px DM Sans';
+    ctx.textAlign = 'center';
+    ctx.fillText('Need more resolved trades for chart', W/2, H/2);
+    return;
+  }
+
+  let cum = 0;
+  const pts = resolved.map(t => { cum += t.pnl; return cum; });
+  const mn = Math.min(0, ...pts), mx = Math.max(0, ...pts);
+  const range = mx - mn || 1;
+  const pad = 20;
+
+  // Zero line
+  const zeroY = pad + (mx / range) * (H - 2*pad);
+  ctx.strokeStyle = '#1e2a3a';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4,4]);
+  ctx.beginPath();
+  ctx.moveTo(pad, zeroY);
+  ctx.lineTo(W-pad, zeroY);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // PnL line
+  ctx.beginPath();
+  pts.forEach((p, i) => {
+    const x = pad + (i / (pts.length-1)) * (W - 2*pad);
+    const y = pad + ((mx - p) / range) * (H - 2*pad);
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  const lastPnl = pts[pts.length-1];
+  ctx.strokeStyle = lastPnl >= 0 ? '#22c55e' : '#ef4444';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Fill
+  const lastX = pad + (1) * (W - 2*pad);
+  ctx.lineTo(lastX, zeroY);
+  ctx.lineTo(pad, zeroY);
+  ctx.closePath();
+  ctx.fillStyle = lastPnl >= 0 ? 'rgba(34,197,94,0.08)' : 'rgba(239,68,68,0.08)';
+  ctx.fill();
+
+  // Dots
+  pts.forEach((p, i) => {
+    const x = pad + (i / (pts.length-1)) * (W - 2*pad);
+    const y = pad + ((mx - p) / range) * (H - 2*pad);
+    ctx.beginPath();
+    ctx.arc(x, y, 3, 0, Math.PI*2);
+    ctx.fillStyle = p >= 0 ? '#22c55e' : '#ef4444';
+    ctx.fill();
+  });
 }
 
-let state={trades:loadTrades(),view:'overview',showModal:false};
-
-function render(){
-  const data=processTrades(state.trades);
-  const pnlColor=data.totalPnL>=0?'var(--green)':'var(--red)';
-  const pnlSign=data.totalPnL>=0?'+':'';
-  const now=new Date().toLocaleTimeString();
-  let h='';
-
-  h+=`<div class="header animate-in delay-1"><div class="header-left"><div class="tag">Kalshi AI Bot</div><h1>Dashboard <span class="badge badge-sim">SIM</span></h1></div><div class="header-right"><span class="update-time"><span class="pulse-dot" style="background:var(--amber)"></span>${now}</span><button class="sync-btn" onclick="openModal()">⬆ Sync Trades</button></div></div>`;
-  h+=`<div class="pnl-hero animate-in delay-2"><div class="pnl-label">Total P&L (Resolved)</div><div class="pnl-value" style="color:${pnlColor}">${pnlSign}$${Math.abs(data.totalPnL).toFixed(2)}</div><div class="pnl-sub" style="color:${pnlColor}">${pnlSign}${data.roi.toFixed(1)}% ROI on $${data.totalInvested.toFixed(2)} invested</div></div>`;
-  h+=`<div class="note-box animate-in delay-2"><strong>⚠ Simulation Mode</strong> — Paper trades only, no real money. Results resolved against actual weather: NYC Feb 12 high: 35°F · Chicago Feb 12 high: 39°F. The conflict detection fix + duplicate prevention is now deployed.</div>`;
-  h+=`<div class="stats-grid animate-in delay-3">`;
-  h+=statCard('Win Rate',`${data.winRate.toFixed(0)}%`,`${data.wins}W / ${data.losses}L`,data.winRate>=50?'var(--green)':'var(--red)');
-  h+=statCard('Total',data.trades.length,`${data.resolved.length} settled`,'var(--text)');
-  h+=statCard('Pending',data.pendingCount,`$${data.pendingCost.toFixed(2)} at risk`,'var(--amber)');
-  h+=statCard('Upside',`$${data.pendingUpside.toFixed(2)}`,'if pending win','var(--blue)');
-  h+=`</div>`;
-  h+=`<div class="chart-box animate-in delay-4"><div class="chart-title">Cumulative P&L</div>${renderChart(data.byDay)}</div>`;
-
-  const tabs=['overview','pending','history'];
-  h+=`<div class="tabs animate-in delay-5">`;
-  tabs.forEach(t=>{const l=t==='pending'&&data.pendingCount>0?`${t} (${data.pendingCount})`:t;h+=`<button class="tab ${state.view===t?'active':''}" onclick="setView('${t}')">${l}</button>`;});
-  h+=`</div><div class="animate-in delay-6">`;
-
-  if(state.view==='overview'){
-    if(!data.byDay.length)h+=`<div class="empty">No trades yet.</div>`;
-    else data.byDay.forEach(d=>{const dp=d.returned-d.invested;const dc=dp>=0?'var(--green)':'var(--red)';const ds=dp>=0?'+':'';h+=`<div class="day-row"><div class="day-date">${d.day}</div><div class="day-stats"><span style="color:var(--text-muted)">${d.trades} trades</span><span style="color:var(--green)">${d.wins}W</span><span style="color:var(--red)">${d.losses}L</span>${d.pending>0?`<span style="color:var(--amber)">${d.pending}⏳</span>`:''}</div><div class="day-pnl" style="color:${dc}">${ds}$${Math.abs(dp).toFixed(2)}</div></div>`;});
-  }
-
-  if(state.view==='pending'){
-    if(!data.pending.length)h+=`<div class="empty">No pending trades — all settled!</div>`;
-    else data.pending.forEach((t,i)=>{const ri=state.trades.indexOf(t);h+=`<div class="pending-card"><div class="pending-header"><div><div style="font-size:12px;color:var(--text);font-weight:500">${t.question}</div><div class="pending-ticker">${t.ticker}</div></div><span class="badge badge-sim" style="font-size:9px">PENDING</span></div><div class="pending-stats"><span>${t.side} @ $${t.price.toFixed(2)}</span><span>${t.contracts} contracts</span><span>Cost: $${t.cost.toFixed(2)}</span><span>Edge: ${(t.edge*100).toFixed(0)}%</span></div><div class="pending-actions"><button class="btn-won" onclick="markResult(${ri},'win')">✓ Won</button><button class="btn-lost" onclick="markResult(${ri},'loss')">✗ Lost</button></div></div>`;});
-  }
-
-  if(state.view==='history'){
-    if(!data.resolved.length)h+=`<div class="empty">No settled trades yet.</div>`;
-    else[...data.resolved].reverse().forEach(t=>{const isW=t.result==='win';const pnl=isW?(t.contracts-t.cost):-t.cost;const cl=isW?'var(--green)':'var(--red)';const dt=new Date(t.timestamp*1000).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});h+=`<div class="trade-row"><div class="trade-info"><div class="trade-question">${t.question}</div><div class="trade-meta">${dt} · ${t.side} ${t.contracts}x @ $${t.price.toFixed(2)} · Edge ${(t.edge*100).toFixed(0)}%</div></div><div class="trade-result"><div class="trade-pnl" style="color:${cl}">${pnl>=0?'+':''}$${Math.abs(pnl).toFixed(2)}</div><div class="trade-tag" style="color:${cl}">${isW?'WON':'LOST'}</div></div></div>`;});
-  }
-
-  h+=`</div>`;
-  h+=`<div class="footer"><p>Sync command:</p><code>ssh root@174.138.84.53 'cat /root/polymarket-ai-bot/data/trades.json' | pbcopy</code><p>Then click "⬆ Sync Trades" and paste · Data persists in your browser</p></div>`;
-
-  if(state.showModal){
-    h+=`<div class="modal-overlay" onclick="closeModal(event)"><div class="modal" onclick="event.stopPropagation()"><h3>Sync Trade Data</h3><p>Run this in terminal, then paste below:<br><code style="font-family:var(--mono);font-size:10px;color:var(--green);background:var(--bg);padding:2px 6px;border-radius:3px">ssh root@174.138.84.53 'cat /root/polymarket-ai-bot/data/trades.json' | pbcopy</code></p><textarea id="pasteArea" placeholder="Paste trades.json here..."></textarea><div class="modal-btns"><button class="modal-btn modal-btn-cancel" onclick="state.showModal=false;render();">Cancel</button><button class="modal-btn modal-btn-save" onclick="importTrades()">Import</button></div></div></div>`;
-  }
-
-  document.getElementById('app').innerHTML=h;
+// ===== TRADES LIST =====
+function renderTrades() {
+  const list = document.getElementById('tradesList');
+  list.innerHTML = '';
+  const sorted = [...trades].reverse();
+  sorted.forEach(t => {
+    const row = document.createElement('div');
+    row.className = 'trade-row';
+    const res = t.result || 'pending';
+    const pnlStr = res === 'pending' ? '—' : (t.pnl >= 0 ? '+' : '') + '$' + (t.pnl||0).toFixed(2);
+    const pnlClass = res === 'win' ? 'green' : res === 'loss' ? 'red' : '';
+    row.innerHTML = `
+      <span class="trade-market" title="${t.ticker}">${t.market || t.ticker}</span>
+      <span style="font-family:var(--mono);font-size:12px">$${(t.cost||0).toFixed(2)}</span>
+      <span><span class="trade-tag ${res}">${res.toUpperCase()}</span></span>
+      <span class="trade-pnl ${pnlClass}">${pnlStr}</span>
+    `;
+    list.appendChild(row);
+  });
 }
 
-function statCard(l,v,s,c){return`<div class="stat-card"><div class="stat-label">${l}</div><div class="stat-value" style="color:${c}">${v}</div><div class="stat-sub">${s}</div></div>`;}
-function setView(v){state.view=v;render();}
-function openModal(){state.showModal=true;render();setTimeout(()=>{const e=document.getElementById('pasteArea');if(e)e.focus();},100);}
-function closeModal(e){if(e.target.classList.contains('modal-overlay')){state.showModal=false;render();}}
+// ===== SYNC =====
+function openSyncModal() { document.getElementById('syncModal').classList.add('show'); }
+function closeSyncModal() { document.getElementById('syncModal').classList.remove('show'); }
 
-function importTrades(){
-  const el=document.getElementById('pasteArea');if(!el)return;
-  try{
-    const raw=JSON.parse(el.value.trim());
-    if(!Array.isArray(raw)||!raw.length){alert('Expected JSON array.');return;}
-    const norm=raw.map(t=>{
-      if(t.condition_id&&t.condition_id.startsWith('0x'))return{ticker:'POLY-'+((t.market_question||'').slice(0,12).replace(/\s/g,'-').toUpperCase()),question:t.market_question||'Unknown',category:'politics',side:t.side||'YES',price:t.price||0.5,contracts:Math.round(t.shares||0),cost:t.size_usdc||5,potential_profit:((t.shares||0)-(t.size_usdc||5)),edge:(t.edge_pct||10)/100,confidence:65,simulation:t.simulated!==false,timestamp:new Date(t.timestamp||t.saved_at||Date.now()).getTime()/1000,result:null};
-      return{...t,result:t.result||null};
-    });
-    state.trades=norm;saveTrades(norm);state.showModal=false;render();
-  }catch(e){alert('Could not parse JSON.');}
+function importTrades() {
+  const raw = document.getElementById('syncInput').value.trim();
+  try {
+    const data = JSON.parse(raw);
+    const arr = Array.isArray(data) ? data : data.trades || [];
+    if (!arr.length) { alert('No trades found in data'); return; }
+    // Merge — normalize fields
+    const normalized = arr.map((t, i) => ({
+      id: t.id || i+1,
+      ticker: t.ticker || t.market_id || '',
+      market: t.title || t.market || t.ticker || '',
+      side: t.side || 'YES',
+      price: t.price || t.entry_price || 0,
+      qty: t.quantity || t.qty || 0,
+      cost: t.cost || (t.price * t.quantity) || 0,
+      potential: t.potential_profit || t.potential || 0,
+      edge: t.edge || 0,
+      confidence: t.confidence || 0,
+      ts: t.timestamp || t.ts || new Date().toISOString(),
+      result: t.result || 'pending',
+      pnl: t.pnl || 0,
+    }));
+    trades = normalized;
+    saveTrades();
+    renderAll();
+    closeSyncModal();
+    document.getElementById('syncInput').value = '';
+  } catch(e) {
+    alert('Invalid JSON: ' + e.message);
+  }
 }
 
-function markResult(i,r){state.trades[i]={...state.trades[i],result:r};saveTrades(state.trades);render();}
+function exportData() {
+  const blob = new Blob([JSON.stringify(trades, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'kalshi-trades.json';
+  a.click();
+}
 
-// Force fresh data on first load of v3
-if(!localStorage.getItem(STORAGE_KEY)){localStorage.setItem(STORAGE_KEY,JSON.stringify(REAL_TRADES));}
+function clearData() {
+  if (confirm('Clear all trade data? This cannot be undone.')) {
+    trades = [];
+    saveTrades();
+    renderAll();
+  }
+}
 
-render();
+// ===== SETTINGS =====
+function updateSlider(id, prefix) {
+  const el = document.getElementById(id);
+  document.getElementById(id + 'Val').textContent = prefix + el.value + (prefix === '%' ? '' : prefix === '$' ? '' : '');
+  if (prefix === '$') document.getElementById(id + 'Val').textContent = '$' + el.value;
+  if (prefix === '%') document.getElementById(id + 'Val').textContent = el.value + '%';
+  if (prefix === '') document.getElementById(id + 'Val').textContent = el.value;
+  generateConfig();
+}
+
+function updateKillSwitch() {
+  const on = document.getElementById('botEnabled').checked;
+  const sw = document.getElementById('killSwitch');
+  sw.className = 'kill-switch ' + (on ? 'on' : 'off');
+  document.getElementById('killStatus').textContent = on ? 'Trading active' : 'TRADING PAUSED';
+  generateConfig();
+}
+
+function generateConfig() {
+  const config = {
+    bot_enabled: document.getElementById('botEnabled').checked,
+    daily_spend_limit: parseInt(document.getElementById('dailyLimit').value),
+    per_trade_amount: parseInt(document.getElementById('perTrade').value),
+    min_confidence: parseInt(document.getElementById('minConf').value),
+    min_edge_pct: parseInt(document.getElementById('minEdge').value),
+    max_trades_per_day: parseInt(document.getElementById('maxTrades').value),
+    markets_enabled: {
+      weather: document.getElementById('mktWeather').checked,
+      politics: document.getElementById('mktPolitics').checked,
+      crypto: document.getElementById('mktCrypto').checked,
+      finance: document.getElementById('mktFinance').checked,
+    },
+    conflict_detection: document.getElementById('conflictDetect').checked,
+    duplicate_prevention: document.getElementById('dupePrevent').checked,
+    updated_at: new Date().toISOString(),
+    updated_by: "dashboard"
+  };
+  document.getElementById('configOutput').textContent = JSON.stringify(config, null, 2);
+}
+
+function copyConfig() {
+  const text = document.getElementById('configOutput').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy Config', 1500);
+  });
+}
+
+function copySshCommand() {
+  const config = document.getElementById('configOutput').textContent;
+  const escaped = config.replace(/'/g, "'\\''");
+  const cmd = `ssh root@174.138.84.53 'cat > /root/polymarket-ai-bot/config.json << ENDCFG\n${config}\nENDCFG'`;
+  navigator.clipboard.writeText(cmd).then(() => {
+    const btn = event.target;
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy SSH Push Command', 1500);
+  });
+}
+
+// ===== INIT =====
+function renderAll() {
+  renderOverview();
+  renderTrades();
+  generateConfig();
+}
+
+renderAll();
+window.addEventListener('resize', () => renderOverview());
 </script>
 </body>
 </html>
