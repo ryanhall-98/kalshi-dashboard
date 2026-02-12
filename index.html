@@ -26,888 +26,228 @@
     --mono: 'JetBrains Mono', 'Fira Code', monospace;
     --sans: 'IBM Plex Sans', -apple-system, sans-serif;
   }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
+  * { margin:0; padding:0; box-sizing:border-box; }
   body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
+    background: var(--bg); color: var(--text); font-family: var(--sans);
+    min-height: 100vh; -webkit-font-smoothing: antialiased;
   }
-
-  /* Subtle grid texture */
   body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: 
-      linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
+    content:''; position:fixed; inset:0;
+    background-image: linear-gradient(rgba(255,255,255,0.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.012) 1px,transparent 1px);
+    background-size: 40px 40px; pointer-events:none; z-index:0;
   }
-
-  .container {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 20px 16px 60px;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Header */
-  .header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    padding-bottom: 20px;
-    margin-bottom: 24px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .header-left .tag {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 3px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-
-  .header-left h1 {
-    font-family: var(--mono);
-    font-size: 22px;
-    font-weight: 700;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .badge {
-    font-size: 9px;
-    padding: 2px 8px;
-    border-radius: 3px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    font-family: var(--mono);
-  }
-
-  .badge-sim { background: var(--amber-dim); color: var(--amber); }
-  .badge-live { background: var(--green-dim); color: var(--green); }
-
-  .header-right {
-    text-align: right;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 6px;
-  }
-
-  .update-time {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text-muted);
-  }
-
-  .sync-btn {
-    font-family: var(--mono);
-    font-size: 10px;
-    padding: 5px 12px;
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    border-radius: 4px;
-    color: var(--text-dim);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
-  .sync-btn:hover { background: rgba(255,255,255,0.08); color: var(--text); border-color: rgba(255,255,255,0.15); }
-
-  /* Big PnL Hero */
-  .pnl-hero {
-    text-align: center;
-    padding: 28px 0 32px;
-    margin-bottom: 24px;
-    position: relative;
-  }
-
-  .pnl-hero::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 20%;
-    right: 20%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--border2), transparent);
-  }
-
-  .pnl-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 3px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-
-  .pnl-value {
-    font-family: var(--mono);
-    font-size: 56px;
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: -2px;
-  }
-
-  .pnl-sub {
-    font-family: var(--mono);
-    font-size: 13px;
-    margin-top: 8px;
-    opacity: 0.7;
-  }
-
-  /* Stats */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-    margin-bottom: 24px;
-  }
-
-  @media (max-width: 600px) {
-    .stats-grid { grid-template-columns: repeat(2, 1fr); }
-    .pnl-value { font-size: 40px; }
-    .header-left h1 { font-size: 17px; }
-  }
-
-  .stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px 12px;
-    transition: border-color 0.2s;
-  }
-
-  .stat-card:hover { border-color: var(--border2); }
-
-  .stat-label {
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 2px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .stat-value {
-    font-family: var(--mono);
-    font-size: 22px;
-    font-weight: 700;
-    line-height: 1.1;
-  }
-
-  .stat-sub {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text-muted);
-    margin-top: 4px;
-  }
-
-  /* Chart */
-  .chart-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 24px;
-    overflow-x: auto;
-  }
-
-  .chart-title {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-
-  /* Tabs */
-  .tabs {
-    display: flex;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 16px;
-  }
-
-  .tab {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    padding: 10px 18px;
-    background: none;
-    border: none;
-    border-bottom: 2px solid transparent;
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
-  .tab:hover { color: var(--text-dim); }
-  .tab.active { color: #fff; border-bottom-color: var(--green); }
-
-  /* Trade rows */
-  .trade-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 12px;
-    border-radius: 4px;
-    transition: background 0.1s;
-  }
-
-  .trade-row:hover { background: rgba(255,255,255,0.02); }
-  .trade-row:nth-child(even) { background: rgba(255,255,255,0.015); }
-
-  .trade-info { flex: 1; min-width: 0; }
-
-  .trade-question {
-    font-size: 12px;
-    color: var(--text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .trade-meta {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text-muted);
-    margin-top: 2px;
-  }
-
-  .trade-result {
-    text-align: right;
-    min-width: 80px;
-    margin-left: 12px;
-  }
-
-  .trade-pnl {
-    font-family: var(--mono);
-    font-size: 13px;
-    font-weight: 600;
-  }
-
-  .trade-tag {
-    font-family: var(--mono);
-    font-size: 9px;
-    opacity: 0.6;
-  }
-
-  /* Pending card */
-  .pending-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px 16px;
-    margin-bottom: 8px;
-    transition: border-color 0.2s;
-  }
-
-  .pending-card:hover { border-color: var(--border2); }
-
-  .pending-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 8px;
-  }
-
-  .pending-ticker {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text-muted);
-    margin-top: 3px;
-  }
-
-  .pending-stats {
-    display: flex;
-    gap: 16px;
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text-dim);
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-  }
-
-  .pending-actions {
-    display: flex;
-    gap: 6px;
-  }
-
-  .btn-won, .btn-lost {
-    font-family: var(--mono);
-    font-size: 10px;
-    padding: 4px 14px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.15s;
-    font-weight: 500;
-  }
-
-  .btn-won {
-    background: var(--green-dim);
-    border: 1px solid rgba(0,220,130,0.25);
-    color: var(--green);
-  }
-
-  .btn-won:hover { background: rgba(0,220,130,0.2); border-color: var(--green); }
-
-  .btn-lost {
-    background: var(--red-dim);
-    border: 1px solid rgba(255,107,107,0.25);
-    color: var(--red);
-  }
-
-  .btn-lost:hover { background: rgba(255,107,107,0.2); border-color: var(--red); }
-
-  /* Day rows */
-  .day-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 12px;
-    border-radius: 4px;
-  }
-
-  .day-row:nth-child(even) { background: rgba(255,255,255,0.015); }
-
-  .day-date {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--text);
-    min-width: 70px;
-  }
-
-  .day-stats {
-    display: flex;
-    gap: 14px;
-    font-family: var(--mono);
-    font-size: 11px;
-    align-items: center;
-  }
-
-  .day-pnl {
-    font-family: var(--mono);
-    font-size: 13px;
-    font-weight: 600;
-    min-width: 80px;
-    text-align: right;
-  }
-
-  /* Modal */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(4px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    padding: 20px;
-  }
-
-  .modal {
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    border-radius: 12px;
-    padding: 24px;
-    width: 100%;
-    max-width: 520px;
-  }
-
-  .modal h3 {
-    font-family: var(--mono);
-    font-size: 14px;
-    font-weight: 600;
-    color: #fff;
-    margin-bottom: 8px;
-  }
-
-  .modal p {
-    font-size: 12px;
-    color: var(--text-dim);
-    margin-bottom: 16px;
-    line-height: 1.6;
-  }
-
-  .modal textarea {
-    width: 100%;
-    height: 160px;
-    background: var(--bg);
-    border: 1px solid var(--border2);
-    border-radius: 6px;
-    padding: 12px;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text);
-    resize: vertical;
-    margin-bottom: 12px;
-  }
-
-  .modal textarea:focus { outline: none; border-color: var(--green); }
-
-  .modal-btns {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-  }
-
-  .modal-btn {
-    font-family: var(--mono);
-    font-size: 11px;
-    padding: 6px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
-  .modal-btn-cancel {
-    background: none;
-    border: 1px solid var(--border2);
-    color: var(--text-dim);
-  }
-
-  .modal-btn-save {
-    background: var(--green);
-    border: 1px solid var(--green);
-    color: var(--bg);
-    font-weight: 600;
-  }
-
-  .modal-btn-save:hover { opacity: 0.9; }
-
-  .empty {
-    text-align: center;
-    padding: 48px 20px;
-    color: var(--text-muted);
-    font-size: 13px;
-  }
-
-  /* Footer */
-  .footer {
-    margin-top: 40px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border);
-    text-align: center;
-  }
-
-  .footer code {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text-muted);
-    background: var(--surface);
-    padding: 2px 6px;
-    border-radius: 3px;
-  }
-
-  .footer p {
-    font-size: 10px;
-    color: var(--text-muted);
-    margin-top: 6px;
-  }
-
-  /* Animations */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .animate-in {
-    animation: fadeUp 0.4s ease forwards;
-    opacity: 0;
-  }
-
-  .delay-1 { animation-delay: 0.05s; }
-  .delay-2 { animation-delay: 0.1s; }
-  .delay-3 { animation-delay: 0.15s; }
-  .delay-4 { animation-delay: 0.2s; }
-  .delay-5 { animation-delay: 0.25s; }
-  .delay-6 { animation-delay: 0.3s; }
-
-  /* Pulse dot */
-  .pulse-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 4px;
-    animation: pulse 2s ease infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 1; }
-  }
+  .container { max-width:860px; margin:0 auto; padding:20px 16px 60px; position:relative; z-index:1; }
+  .header { display:flex; align-items:flex-end; justify-content:space-between; padding-bottom:20px; margin-bottom:24px; border-bottom:1px solid var(--border); }
+  .header-left .tag { font-family:var(--mono); font-size:10px; letter-spacing:3px; color:var(--text-muted); text-transform:uppercase; margin-bottom:4px; }
+  .header-left h1 { font-family:var(--mono); font-size:22px; font-weight:700; color:#fff; display:flex; align-items:center; gap:10px; }
+  .badge { font-size:9px; padding:2px 8px; border-radius:3px; font-weight:600; letter-spacing:1.5px; font-family:var(--mono); }
+  .badge-sim { background:var(--amber-dim); color:var(--amber); }
+  .badge-live { background:var(--green-dim); color:var(--green); }
+  .header-right { text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
+  .update-time { font-family:var(--mono); font-size:10px; color:var(--text-muted); }
+  .sync-btn { font-family:var(--mono); font-size:10px; padding:5px 12px; background:var(--surface2); border:1px solid var(--border2); border-radius:4px; color:var(--text-dim); cursor:pointer; transition:all 0.15s; }
+  .sync-btn:hover { background:rgba(255,255,255,0.08); color:var(--text); border-color:rgba(255,255,255,0.15); }
+  .pnl-hero { text-align:center; padding:28px 0 32px; margin-bottom:24px; position:relative; }
+  .pnl-hero::after { content:''; position:absolute; bottom:0; left:20%; right:20%; height:1px; background:linear-gradient(90deg,transparent,var(--border2),transparent); }
+  .pnl-label { font-family:var(--mono); font-size:10px; letter-spacing:3px; color:var(--text-muted); text-transform:uppercase; margin-bottom:10px; }
+  .pnl-value { font-family:var(--mono); font-size:56px; font-weight:800; line-height:1; letter-spacing:-2px; }
+  .pnl-sub { font-family:var(--mono); font-size:13px; margin-top:8px; opacity:0.7; }
+  .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:24px; }
+  @media(max-width:600px) { .stats-grid{grid-template-columns:repeat(2,1fr);} .pnl-value{font-size:40px;} .header-left h1{font-size:17px;} }
+  .stat-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:14px 12px; transition:border-color 0.2s; }
+  .stat-card:hover { border-color:var(--border2); }
+  .stat-label { font-family:var(--mono); font-size:9px; letter-spacing:2px; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px; }
+  .stat-value { font-family:var(--mono); font-size:22px; font-weight:700; line-height:1.1; }
+  .stat-sub { font-family:var(--mono); font-size:10px; color:var(--text-muted); margin-top:4px; }
+  .chart-box { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:16px; margin-bottom:24px; overflow-x:auto; }
+  .chart-title { font-family:var(--mono); font-size:10px; letter-spacing:2px; color:var(--text-muted); text-transform:uppercase; margin-bottom:12px; }
+  .tabs { display:flex; border-bottom:1px solid var(--border); margin-bottom:16px; }
+  .tab { font-family:var(--mono); font-size:11px; letter-spacing:1.5px; text-transform:uppercase; padding:10px 18px; background:none; border:none; border-bottom:2px solid transparent; color:var(--text-muted); cursor:pointer; transition:all 0.15s; }
+  .tab:hover { color:var(--text-dim); }
+  .tab.active { color:#fff; border-bottom-color:var(--green); }
+  .trade-row { display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border-radius:4px; transition:background 0.1s; }
+  .trade-row:hover { background:rgba(255,255,255,0.02); }
+  .trade-row:nth-child(even) { background:rgba(255,255,255,0.015); }
+  .trade-info { flex:1; min-width:0; }
+  .trade-question { font-size:12px; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .trade-meta { font-family:var(--mono); font-size:10px; color:var(--text-muted); margin-top:2px; }
+  .trade-result { text-align:right; min-width:80px; margin-left:12px; }
+  .trade-pnl { font-family:var(--mono); font-size:13px; font-weight:600; }
+  .trade-tag { font-family:var(--mono); font-size:9px; opacity:0.6; }
+  .pending-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:14px 16px; margin-bottom:8px; transition:border-color 0.2s; }
+  .pending-card:hover { border-color:var(--border2); }
+  .pending-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; }
+  .pending-ticker { font-family:var(--mono); font-size:10px; color:var(--text-muted); margin-top:3px; }
+  .pending-stats { display:flex; gap:16px; font-family:var(--mono); font-size:10px; color:var(--text-dim); margin-bottom:10px; flex-wrap:wrap; }
+  .pending-actions { display:flex; gap:6px; }
+  .btn-won,.btn-lost { font-family:var(--mono); font-size:10px; padding:4px 14px; border-radius:4px; cursor:pointer; transition:all 0.15s; font-weight:500; }
+  .btn-won { background:var(--green-dim); border:1px solid rgba(0,220,130,0.25); color:var(--green); }
+  .btn-won:hover { background:rgba(0,220,130,0.2); border-color:var(--green); }
+  .btn-lost { background:var(--red-dim); border:1px solid rgba(255,107,107,0.25); color:var(--red); }
+  .btn-lost:hover { background:rgba(255,107,107,0.2); border-color:var(--red); }
+  .day-row { display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border-radius:4px; }
+  .day-row:nth-child(even) { background:rgba(255,255,255,0.015); }
+  .day-date { font-family:var(--mono); font-size:12px; color:var(--text); min-width:70px; }
+  .day-stats { display:flex; gap:14px; font-family:var(--mono); font-size:11px; align-items:center; }
+  .day-pnl { font-family:var(--mono); font-size:13px; font-weight:600; min-width:80px; text-align:right; }
+  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; z-index:100; padding:20px; }
+  .modal { background:var(--surface); border:1px solid var(--border2); border-radius:12px; padding:24px; width:100%; max-width:520px; }
+  .modal h3 { font-family:var(--mono); font-size:14px; font-weight:600; color:#fff; margin-bottom:8px; }
+  .modal p { font-size:12px; color:var(--text-dim); margin-bottom:16px; line-height:1.6; }
+  .modal textarea { width:100%; height:160px; background:var(--bg); border:1px solid var(--border2); border-radius:6px; padding:12px; font-family:var(--mono); font-size:11px; color:var(--text); resize:vertical; margin-bottom:12px; }
+  .modal textarea:focus { outline:none; border-color:var(--green); }
+  .modal-btns { display:flex; gap:8px; justify-content:flex-end; }
+  .modal-btn { font-family:var(--mono); font-size:11px; padding:6px 16px; border-radius:4px; cursor:pointer; transition:all 0.15s; }
+  .modal-btn-cancel { background:none; border:1px solid var(--border2); color:var(--text-dim); }
+  .modal-btn-save { background:var(--green); border:1px solid var(--green); color:var(--bg); font-weight:600; }
+  .modal-btn-save:hover { opacity:0.9; }
+  .empty { text-align:center; padding:48px 20px; color:var(--text-muted); font-size:13px; }
+  .footer { margin-top:40px; padding-top:16px; border-top:1px solid var(--border); text-align:center; }
+  .footer code { font-family:var(--mono); font-size:10px; color:var(--text-muted); background:var(--surface); padding:2px 6px; border-radius:3px; display:inline-block; margin:4px 0; }
+  .footer p { font-size:10px; color:var(--text-muted); margin-top:6px; }
+  .note-box { background:var(--surface); border:1px solid var(--border); border-left:3px solid var(--amber); border-radius:4px; padding:12px 14px; margin-bottom:20px; font-size:11px; color:var(--text-dim); line-height:1.6; }
+  .note-box strong { color:var(--amber); }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+  .animate-in { animation:fadeUp 0.4s ease forwards; opacity:0; }
+  .delay-1{animation-delay:0.05s} .delay-2{animation-delay:0.1s} .delay-3{animation-delay:0.15s}
+  .delay-4{animation-delay:0.2s} .delay-5{animation-delay:0.25s} .delay-6{animation-delay:0.3s}
+  .pulse-dot { width:6px; height:6px; border-radius:50%; display:inline-block; margin-right:4px; animation:pulse 2s ease infinite; }
+  @keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
 </style>
 </head>
 <body>
 <div class="container" id="app"></div>
-
 <script>
-// ==========================================
-// DATA LAYER
-// ==========================================
-const STORAGE_KEY = 'kalshi_bot_trades';
+const STORAGE_KEY = 'kalshi_bot_trades_v3';
 
-const SAMPLE_TRADES = [
-  { ticker:"KXHIGHNY-26FEB12-B38.5", question:"NYC high temp 38-39°F Feb 12", category:"weather", side:"YES", price:0.12, contracts:32, cost:3.84, potential_profit:28.16, edge:0.08, confidence:85, simulation:true, timestamp:1739319600, result:null },
-  { ticker:"KXHIGHNY-26FEB12-B34.5", question:"NYC high temp 34-35°F Feb 12", category:"weather", side:"YES", price:0.30, contracts:21, cost:6.30, potential_profit:14.70, edge:0.15, confidence:65, simulation:true, timestamp:1739319660, result:null },
-  { ticker:"KXHIGHCHI-26FEB12-T38", question:"Chicago high temp <38°F Feb 12", category:"weather", side:"YES", price:0.22, contracts:28, cost:6.16, potential_profit:21.84, edge:0.13, confidence:75, simulation:true, timestamp:1739319720, result:"win" },
-  { ticker:"KXHIGHNY-26FEB11-B36.5", question:"NYC high temp 36-37°F Feb 11", category:"weather", side:"YES", price:0.15, contracts:40, cost:6.00, potential_profit:34.00, edge:0.12, confidence:80, simulation:true, timestamp:1739233200, result:"win" },
-  { ticker:"KXHIGHCHI-26FEB11-B40.5", question:"Chicago high temp 40-41°F Feb 11", category:"weather", side:"YES", price:0.18, contracts:30, cost:5.40, potential_profit:24.60, edge:0.10, confidence:70, simulation:true, timestamp:1739233260, result:"loss" },
-  { ticker:"KXHIGHNY-26FEB10-B38.5", question:"NYC high temp 38-39°F Feb 10", category:"weather", side:"YES", price:0.20, contracts:25, cost:5.00, potential_profit:20.00, edge:0.11, confidence:75, simulation:true, timestamp:1739146800, result:"win" },
-  { ticker:"KXHIGHLA-26FEB10-B68.5", question:"LA high temp 68-69°F Feb 10", category:"weather", side:"YES", price:0.25, contracts:20, cost:5.00, potential_profit:15.00, edge:0.09, confidence:65, simulation:true, timestamp:1739146860, result:"win" },
-  { ticker:"KXHIGHDEN-26FEB10-T45", question:"Denver high temp <45°F Feb 10", category:"weather", side:"YES", price:0.35, contracts:15, cost:5.25, potential_profit:9.75, edge:0.14, confidence:80, simulation:true, timestamp:1739146920, result:"win" },
-  { ticker:"KXHIGHNY-26FEB09-B40.5", question:"NYC high temp 40-41°F Feb 9", category:"weather", side:"YES", price:0.10, contracts:50, cost:5.00, potential_profit:45.00, edge:0.15, confidence:85, simulation:true, timestamp:1739060400, result:"win" },
-  { ticker:"KXHIGHCHI-26FEB09-B35.5", question:"Chicago high temp 35-36°F Feb 9", category:"weather", side:"YES", price:0.28, contracts:18, cost:5.04, potential_profit:12.96, edge:0.10, confidence:70, simulation:true, timestamp:1739060460, result:"loss" },
-  { ticker:"KXHIGHNY-26FEB08-B42.5", question:"NYC high temp 42-43°F Feb 8", category:"weather", side:"YES", price:0.14, contracts:35, cost:4.90, potential_profit:30.10, edge:0.12, confidence:78, simulation:true, timestamp:1738974000, result:"win" },
-  { ticker:"KXHIGHNY-26FEB07-B39.5", question:"NYC high temp 39-40°F Feb 7", category:"weather", side:"YES", price:0.16, contracts:30, cost:4.80, potential_profit:25.20, edge:0.11, confidence:72, simulation:true, timestamp:1738887600, result:"win" },
+// REAL TRADES from VPS as of Feb 12 2026
+// Resolved against actual weather: NYC high 35°F, Chicago high 39°F
+const REAL_TRADES = [
+  {ticker:"POLY-SHUTDOWN",question:"Another US government shutdown by February 14?",category:"politics",side:"YES",price:0.735,contracts:6,cost:5.00,potential_profit:1.80,edge:0.115,confidence:70,simulation:true,timestamp:1739245443,result:null},
+  {ticker:"POLY-HULIAIPOLE",question:"Will Russia capture all of Huliaipole by Feb 28?",category:"politics",side:"NO",price:0.52,contracts:9,cost:5.00,potential_profit:4.62,edge:0.33,confidence:65,simulation:true,timestamp:1739245457,result:null},
+  {ticker:"KXHIGHNY-26FEB12-B38.5",question:"NYC high temp 38-39°F on Feb 12",category:"weather",side:"YES",price:0.12,contracts:49,cost:5.88,potential_profit:43.12,edge:0.13,confidence:80,simulation:true,timestamp:1739319543,result:"loss"},
+  {ticker:"KXHIGHCHI-26FEB12-T38",question:"Chicago high temp <38°F on Feb 12",category:"weather",side:"YES",price:0.22,contracts:28,cost:6.16,potential_profit:21.84,edge:0.13,confidence:75,simulation:true,timestamp:1739319546,result:"loss"},
+  {ticker:"KXHIGHCHI-26FEB12-B42.5",question:"Chicago high temp 42-43°F on Feb 12",category:"weather",side:"YES",price:0.12,contracts:52,cost:6.24,potential_profit:45.76,edge:0.13,confidence:85,simulation:true,timestamp:1739319547,result:"loss"},
+  {ticker:"KXHIGHNY-26FEB12-B38.5",question:"NYC high temp 38-39°F on Feb 12",category:"weather",side:"YES",price:0.12,contracts:43,cost:5.16,potential_profit:37.84,edge:0.13,confidence:70,simulation:true,timestamp:1739319870,result:"loss"},
+  {ticker:"KXHIGHNY-26FEB12-B34.5",question:"NYC high temp 34-35°F on Feb 12",category:"weather",side:"YES",price:0.30,contracts:25,cost:7.50,potential_profit:17.50,edge:0.15,confidence:75,simulation:true,timestamp:1739319872,result:"win"},
+  {ticker:"KXHIGHNY-26FEB12-B38.5",question:"NYC high temp 38-39°F on Feb 12",category:"weather",side:"YES",price:0.12,contracts:32,cost:3.84,potential_profit:28.16,edge:0.08,confidence:85,simulation:true,timestamp:1739320308,result:"loss"},
+  {ticker:"KXHIGHNY-26FEB12-B34.5",question:"NYC high temp 34-35°F on Feb 12",category:"weather",side:"YES",price:0.30,contracts:21,cost:6.30,potential_profit:14.70,edge:0.15,confidence:65,simulation:true,timestamp:1739320310,result:"win"},
+  {ticker:"KXHIGHNY-26FEB12-B38.5",question:"NYC high temp 38-39°F on Feb 12",category:"weather",side:"YES",price:0.12,contracts:49,cost:5.88,potential_profit:43.12,edge:0.13,confidence:80,simulation:true,timestamp:1739320434,result:"loss"},
+  {ticker:"KXHIGHNY-26FEB12-B34.5",question:"NYC high temp 34-35°F on Feb 12",category:"weather",side:"YES",price:0.30,contracts:28,cost:8.40,potential_profit:19.60,edge:0.15,confidence:85,simulation:true,timestamp:1739320437,result:"win"},
+  {ticker:"KXHIGHNY-26FEB12-B38.5",question:"NYC high temp 38-39°F on Feb 12",category:"weather",side:"YES",price:0.12,contracts:52,cost:6.24,potential_profit:45.76,edge:0.13,confidence:85,simulation:true,timestamp:1739320560,result:"loss"},
+  {ticker:"KXHIGHNY-26FEB12-B34.5",question:"NYC high temp 34-35°F on Feb 12",category:"weather",side:"YES",price:0.30,contracts:17,cost:5.10,potential_profit:11.90,edge:0.10,confidence:75,simulation:true,timestamp:1739320776,result:"win"},
+  {ticker:"KXHIGHCHI-26FEB12-B42.5",question:"Chicago high temp 42-43°F on Feb 12",category:"weather",side:"YES",price:0.17,contracts:41,cost:6.97,potential_profit:34.03,edge:0.18,confidence:70,simulation:true,timestamp:1739321025,result:"loss"},
 ];
 
-function loadTrades() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-    }
-  } catch(e) {}
-  return SAMPLE_TRADES;
+function loadTrades(){try{const r=localStorage.getItem(STORAGE_KEY);if(r){const p=JSON.parse(r);if(Array.isArray(p)&&p.length>0)return p;}}catch(e){}localStorage.setItem(STORAGE_KEY,JSON.stringify(REAL_TRADES));return REAL_TRADES;}
+function saveTrades(t){localStorage.setItem(STORAGE_KEY,JSON.stringify(t));}
+
+function processTrades(trades){
+  const resolved=trades.filter(t=>t.result),pending=trades.filter(t=>!t.result);
+  let totalInvested=0,totalReturned=0,wins=0,losses=0;
+  resolved.forEach(t=>{totalInvested+=t.cost;if(t.result==='win'){totalReturned+=t.contracts;wins++;}if(t.result==='loss'){losses++;}});
+  const totalPnL=totalReturned-totalInvested;
+  const roi=totalInvested>0?(totalPnL/totalInvested)*100:0;
+  const winRate=resolved.length>0?(wins/resolved.length)*100:0;
+  const pendingCost=pending.reduce((s,t)=>s+t.cost,0);
+  const pendingUpside=pending.reduce((s,t)=>s+t.potential_profit,0);
+  const byDay={};
+  trades.forEach(t=>{const d=new Date(t.timestamp*1000).toLocaleDateString('en-US',{month:'short',day:'numeric'});if(!byDay[d])byDay[d]={day:d,invested:0,returned:0,trades:0,wins:0,losses:0,pending:0,ts:t.timestamp};byDay[d].trades++;if(t.result==='win'){byDay[d].invested+=t.cost;byDay[d].returned+=t.contracts;byDay[d].wins++;}else if(t.result==='loss'){byDay[d].invested+=t.cost;byDay[d].losses++;}else{byDay[d].pending++;}});
+  return{totalPnL,roi,winRate,wins,losses,pendingCount:pending.length,totalInvested,totalReturned,pendingCost,pendingUpside,byDay:Object.values(byDay).sort((a,b)=>b.ts-a.ts),trades,resolved,pending};
 }
 
-function saveTrades(trades) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(trades));
+function renderChart(byDay){
+  if(!byDay.length)return'<div class="empty">No data</div>';
+  const rev=[...byDay].reverse();let cum=0;
+  const pts=rev.map(d=>{cum+=(d.returned-d.invested);return{...d,cumPnL:cum};});
+  const maxP=Math.max(...pts.map(p=>p.cumPnL),0.01),minP=Math.min(...pts.map(p=>p.cumPnL),-0.01);
+  const range=(maxP-minP)||1,h=130,w=Math.max(pts.length*120,320);
+  const coords=pts.map((p,i)=>{const x=(i/Math.max(pts.length-1,1))*(w-50)+25;const y=h-15-((p.cumPnL-minP)/range)*(h-40);return{x,y,...p};});
+  const zeroY=h-15-((0-minP)/range)*(h-40);
+  const lineD=coords.map((c,i)=>`${i===0?'M':'L'} ${c.x} ${c.y}`).join(' ');
+  const areaD=lineD+` L ${coords[coords.length-1].x} ${h-5} L ${coords[0].x} ${h-5} Z`;
+  const color=cum>=0?'var(--green)':'var(--red)';
+  let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="display:block;">`;
+  s+=`<defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity="0.12"/><stop offset="100%" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>`;
+  s+=`<line x1="25" y1="${zeroY}" x2="${w-25}" y2="${zeroY}" stroke="rgba(255,255,255,0.06)" stroke-dasharray="4 4"/>`;
+  s+=`<path d="${areaD}" fill="url(#ag)"/><path d="${lineD}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+  coords.forEach(c=>{const col=c.cumPnL>=0?'var(--green)':'var(--red)';s+=`<circle cx="${c.x}" cy="${c.y}" r="3.5" fill="var(--bg)" stroke="${col}" stroke-width="2"/>`;s+=`<text x="${c.x}" y="${c.y-10}" text-anchor="middle" fill="${col}" font-size="9" font-family="JetBrains Mono" font-weight="600">$${c.cumPnL.toFixed(2)}</text>`;s+=`<text x="${c.x}" y="${h}" text-anchor="middle" fill="var(--text-muted)" font-size="8.5" font-family="JetBrains Mono">${c.day}</text>`;});
+  s+=`</svg>`;return s;
 }
 
-function processTrades(trades) {
-  const resolved = trades.filter(t => t.result);
-  const pending = trades.filter(t => !t.result);
+let state={trades:loadTrades(),view:'overview',showModal:false};
 
-  let totalInvested = 0, totalReturned = 0, wins = 0, losses = 0;
-  resolved.forEach(t => {
-    totalInvested += t.cost;
-    if (t.result === 'win') { totalReturned += t.contracts; wins++; }
-    if (t.result === 'loss') { losses++; }
-  });
+function render(){
+  const data=processTrades(state.trades);
+  const pnlColor=data.totalPnL>=0?'var(--green)':'var(--red)';
+  const pnlSign=data.totalPnL>=0?'+':'';
+  const now=new Date().toLocaleTimeString();
+  let h='';
 
-  const totalPnL = totalReturned - totalInvested;
-  const roi = totalInvested > 0 ? (totalPnL / totalInvested) * 100 : 0;
-  const winRate = resolved.length > 0 ? (wins / resolved.length) * 100 : 0;
-  const pendingCost = pending.reduce((s,t) => s + t.cost, 0);
-  const pendingUpside = pending.reduce((s,t) => s + t.potential_profit, 0);
+  h+=`<div class="header animate-in delay-1"><div class="header-left"><div class="tag">Kalshi AI Bot</div><h1>Dashboard <span class="badge badge-sim">SIM</span></h1></div><div class="header-right"><span class="update-time"><span class="pulse-dot" style="background:var(--amber)"></span>${now}</span><button class="sync-btn" onclick="openModal()">⬆ Sync Trades</button></div></div>`;
+  h+=`<div class="pnl-hero animate-in delay-2"><div class="pnl-label">Total P&L (Resolved)</div><div class="pnl-value" style="color:${pnlColor}">${pnlSign}$${Math.abs(data.totalPnL).toFixed(2)}</div><div class="pnl-sub" style="color:${pnlColor}">${pnlSign}${data.roi.toFixed(1)}% ROI on $${data.totalInvested.toFixed(2)} invested</div></div>`;
+  h+=`<div class="note-box animate-in delay-2"><strong>⚠ Simulation Mode</strong> — Paper trades only, no real money. Results resolved against actual weather: NYC Feb 12 high: 35°F · Chicago Feb 12 high: 39°F. The conflict detection fix + duplicate prevention is now deployed.</div>`;
+  h+=`<div class="stats-grid animate-in delay-3">`;
+  h+=statCard('Win Rate',`${data.winRate.toFixed(0)}%`,`${data.wins}W / ${data.losses}L`,data.winRate>=50?'var(--green)':'var(--red)');
+  h+=statCard('Total',data.trades.length,`${data.resolved.length} settled`,'var(--text)');
+  h+=statCard('Pending',data.pendingCount,`$${data.pendingCost.toFixed(2)} at risk`,'var(--amber)');
+  h+=statCard('Upside',`$${data.pendingUpside.toFixed(2)}`,'if pending win','var(--blue)');
+  h+=`</div>`;
+  h+=`<div class="chart-box animate-in delay-4"><div class="chart-title">Cumulative P&L</div>${renderChart(data.byDay)}</div>`;
 
-  const byDay = {};
-  trades.forEach(t => {
-    const d = new Date(t.timestamp * 1000).toLocaleDateString('en-US', { month:'short', day:'numeric' });
-    if (!byDay[d]) byDay[d] = { day:d, invested:0, returned:0, trades:0, wins:0, losses:0, pending:0, ts: t.timestamp };
-    byDay[d].trades++;
-    if (t.result === 'win') { byDay[d].invested += t.cost; byDay[d].returned += t.contracts; byDay[d].wins++; }
-    else if (t.result === 'loss') { byDay[d].invested += t.cost; byDay[d].losses++; }
-    else { byDay[d].pending++; }
-  });
+  const tabs=['overview','pending','history'];
+  h+=`<div class="tabs animate-in delay-5">`;
+  tabs.forEach(t=>{const l=t==='pending'&&data.pendingCount>0?`${t} (${data.pendingCount})`:t;h+=`<button class="tab ${state.view===t?'active':''}" onclick="setView('${t}')">${l}</button>`;});
+  h+=`</div><div class="animate-in delay-6">`;
 
-  const days = Object.values(byDay).sort((a,b) => b.ts - a.ts);
-
-  return { totalPnL, roi, winRate, wins, losses, pendingCount: pending.length, totalInvested, totalReturned, pendingCost, pendingUpside, byDay: days, trades, resolved, pending };
-}
-
-// ==========================================
-// CHART
-// ==========================================
-function renderChart(byDay) {
-  if (!byDay.length) return '<div class="empty">No data yet</div>';
-
-  const reversed = [...byDay].reverse();
-  let cum = 0;
-  const pts = reversed.map(d => {
-    cum += (d.returned - d.invested);
-    return { ...d, cumPnL: cum };
-  });
-
-  const maxP = Math.max(...pts.map(p => p.cumPnL), 0.01);
-  const minP = Math.min(...pts.map(p => p.cumPnL), 0);
-  const range = (maxP - minP) || 1;
-  const h = 130, w = Math.max(pts.length * 70, 320);
-
-  const coords = pts.map((p, i) => {
-    const x = (i / Math.max(pts.length - 1, 1)) * (w - 50) + 25;
-    const y = h - 15 - ((p.cumPnL - minP) / range) * (h - 40);
-    return { x, y, ...p };
-  });
-
-  const zeroY = h - 15 - ((0 - minP) / range) * (h - 40);
-  const lineD = coords.map((c,i) => `${i===0?'M':'L'} ${c.x} ${c.y}`).join(' ');
-  const areaD = lineD + ` L ${coords[coords.length-1].x} ${h-5} L ${coords[0].x} ${h-5} Z`;
-  const isPos = cum >= 0;
-  const color = isPos ? 'var(--green)' : 'var(--red)';
-
-  let svg = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="display:block;">`;
-  svg += `<defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1">`;
-  svg += `<stop offset="0%" stop-color="${color}" stop-opacity="0.12"/>`;
-  svg += `<stop offset="100%" stop-color="${color}" stop-opacity="0"/>`;
-  svg += `</linearGradient></defs>`;
-  svg += `<line x1="25" y1="${zeroY}" x2="${w-25}" y2="${zeroY}" stroke="rgba(255,255,255,0.06)" stroke-dasharray="4 4"/>`;
-  svg += `<path d="${areaD}" fill="url(#ag)"/>`;
-  svg += `<path d="${lineD}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
-  coords.forEach(c => {
-    const col = c.cumPnL >= 0 ? 'var(--green)' : 'var(--red)';
-    svg += `<circle cx="${c.x}" cy="${c.y}" r="3.5" fill="var(--bg)" stroke="${col}" stroke-width="2"/>`;
-    svg += `<text x="${c.x}" y="${c.y - 10}" text-anchor="middle" fill="${col}" font-size="9" font-family="JetBrains Mono" font-weight="600">$${c.cumPnL.toFixed(2)}</text>`;
-    svg += `<text x="${c.x}" y="${h}" text-anchor="middle" fill="var(--text-muted)" font-size="8.5" font-family="JetBrains Mono">${c.day}</text>`;
-  });
-  svg += `</svg>`;
-  return svg;
-}
-
-// ==========================================
-// RENDER
-// ==========================================
-let state = {
-  trades: loadTrades(),
-  view: 'overview',
-  showModal: false,
-};
-
-function c(color) { return `color:${color}`; }
-
-function render() {
-  const data = processTrades(state.trades);
-  const pnlColor = data.totalPnL >= 0 ? 'var(--green)' : 'var(--red)';
-  const pnlSign = data.totalPnL >= 0 ? '+' : '';
-  const isSim = state.trades[0]?.simulation;
-  const now = new Date().toLocaleTimeString();
-
-  let html = '';
-
-  // Header
-  html += `
-  <div class="header animate-in delay-1">
-    <div class="header-left">
-      <div class="tag">Kalshi AI Bot</div>
-      <h1>Dashboard <span class="badge ${isSim ? 'badge-sim' : 'badge-live'}">${isSim ? 'SIM' : 'LIVE'}</span></h1>
-    </div>
-    <div class="header-right">
-      <span class="update-time"><span class="pulse-dot" style="background:${isSim ? 'var(--amber)' : 'var(--green)'}"></span>${now}</span>
-      <button class="sync-btn" onclick="openModal()">⬆ Sync Trades</button>
-    </div>
-  </div>`;
-
-  // PnL Hero
-  html += `
-  <div class="pnl-hero animate-in delay-2">
-    <div class="pnl-label">Total P&L</div>
-    <div class="pnl-value" style="${c(pnlColor)}">${pnlSign}$${Math.abs(data.totalPnL).toFixed(2)}</div>
-    <div class="pnl-sub" style="${c(pnlColor)}">${pnlSign}${data.roi.toFixed(1)}% ROI on $${data.totalInvested.toFixed(2)} invested</div>
-  </div>`;
-
-  // Stats
-  html += `<div class="stats-grid animate-in delay-3">`;
-  html += statCard('Win Rate', `${data.winRate.toFixed(0)}%`, `${data.wins}W / ${data.losses}L`, data.winRate >= 50 ? 'var(--green)' : 'var(--red)');
-  html += statCard('Total', data.trades.length, `${data.resolved.length} settled`, 'var(--text)');
-  html += statCard('Pending', data.pendingCount, `$${data.pendingCost.toFixed(2)} at risk`, 'var(--amber)');
-  html += statCard('Upside', `$${data.pendingUpside.toFixed(2)}`, 'if all pending win', 'var(--blue)');
-  html += `</div>`;
-
-  // Chart
-  html += `
-  <div class="chart-box animate-in delay-4">
-    <div class="chart-title">Cumulative P&L</div>
-    ${renderChart(data.byDay)}
-  </div>`;
-
-  // Tabs
-  const tabs = ['overview', 'pending', 'history'];
-  html += `<div class="tabs animate-in delay-5">`;
-  tabs.forEach(t => {
-    const label = t === 'pending' && data.pendingCount > 0 ? `${t} (${data.pendingCount})` : t;
-    html += `<button class="tab ${state.view === t ? 'active' : ''}" onclick="setView('${t}')">${label}</button>`;
-  });
-  html += `</div>`;
-
-  // Content
-  html += `<div class="animate-in delay-6">`;
-
-  if (state.view === 'overview') {
-    if (data.byDay.length === 0) {
-      html += `<div class="empty">No trades yet. Sync your data to get started.</div>`;
-    } else {
-      data.byDay.forEach(d => {
-        const dayPnl = d.returned - d.invested;
-        const dayColor = dayPnl >= 0 ? 'var(--green)' : 'var(--red)';
-        const daySign = dayPnl >= 0 ? '+' : '';
-        html += `
-        <div class="day-row">
-          <div class="day-date">${d.day}</div>
-          <div class="day-stats">
-            <span style="color:var(--text-muted)">${d.trades} trades</span>
-            <span style="color:var(--green)">${d.wins}W</span>
-            <span style="color:var(--red)">${d.losses}L</span>
-            ${d.pending > 0 ? `<span style="color:var(--amber)">${d.pending}⏳</span>` : ''}
-          </div>
-          <div class="day-pnl" style="${c(dayColor)}">${daySign}$${Math.abs(dayPnl).toFixed(2)}</div>
-        </div>`;
-      });
-    }
+  if(state.view==='overview'){
+    if(!data.byDay.length)h+=`<div class="empty">No trades yet.</div>`;
+    else data.byDay.forEach(d=>{const dp=d.returned-d.invested;const dc=dp>=0?'var(--green)':'var(--red)';const ds=dp>=0?'+':'';h+=`<div class="day-row"><div class="day-date">${d.day}</div><div class="day-stats"><span style="color:var(--text-muted)">${d.trades} trades</span><span style="color:var(--green)">${d.wins}W</span><span style="color:var(--red)">${d.losses}L</span>${d.pending>0?`<span style="color:var(--amber)">${d.pending}⏳</span>`:''}</div><div class="day-pnl" style="color:${dc}">${ds}$${Math.abs(dp).toFixed(2)}</div></div>`;});
   }
 
-  if (state.view === 'pending') {
-    if (data.pending.length === 0) {
-      html += `<div class="empty">No pending trades — all settled!</div>`;
-    } else {
-      data.pending.forEach((t, i) => {
-        const realIdx = state.trades.indexOf(t);
-        html += `
-        <div class="pending-card">
-          <div class="pending-header">
-            <div>
-              <div style="font-size:12px;color:var(--text);font-weight:500">${t.question}</div>
-              <div class="pending-ticker">${t.ticker}</div>
-            </div>
-            <span class="badge badge-sim" style="font-size:9px">PENDING</span>
-          </div>
-          <div class="pending-stats">
-            <span>${t.side} @ $${t.price.toFixed(2)}</span>
-            <span>${t.contracts} contracts</span>
-            <span>Cost: $${t.cost.toFixed(2)}</span>
-            <span>Edge: ${(t.edge * 100).toFixed(0)}%</span>
-            <span>Conf: ${t.confidence}/100</span>
-          </div>
-          <div class="pending-actions">
-            <button class="btn-won" onclick="markResult(${realIdx}, 'win')">✓ Won</button>
-            <button class="btn-lost" onclick="markResult(${realIdx}, 'loss')">✗ Lost</button>
-          </div>
-        </div>`;
-      });
-    }
+  if(state.view==='pending'){
+    if(!data.pending.length)h+=`<div class="empty">No pending trades — all settled!</div>`;
+    else data.pending.forEach((t,i)=>{const ri=state.trades.indexOf(t);h+=`<div class="pending-card"><div class="pending-header"><div><div style="font-size:12px;color:var(--text);font-weight:500">${t.question}</div><div class="pending-ticker">${t.ticker}</div></div><span class="badge badge-sim" style="font-size:9px">PENDING</span></div><div class="pending-stats"><span>${t.side} @ $${t.price.toFixed(2)}</span><span>${t.contracts} contracts</span><span>Cost: $${t.cost.toFixed(2)}</span><span>Edge: ${(t.edge*100).toFixed(0)}%</span></div><div class="pending-actions"><button class="btn-won" onclick="markResult(${ri},'win')">✓ Won</button><button class="btn-lost" onclick="markResult(${ri},'loss')">✗ Lost</button></div></div>`;});
   }
 
-  if (state.view === 'history') {
-    if (data.resolved.length === 0) {
-      html += `<div class="empty">No settled trades yet.</div>`;
-    } else {
-      data.resolved.forEach(t => {
-        const isWin = t.result === 'win';
-        const pnl = isWin ? (t.contracts - t.cost) : -t.cost;
-        const clr = isWin ? 'var(--green)' : 'var(--red)';
-        const date = new Date(t.timestamp * 1000).toLocaleDateString();
-        html += `
-        <div class="trade-row">
-          <div class="trade-info">
-            <div class="trade-question">${t.question}</div>
-            <div class="trade-meta">${date} · ${t.side} ${t.contracts}x @ $${t.price.toFixed(2)} · Edge ${(t.edge*100).toFixed(0)}%</div>
-          </div>
-          <div class="trade-result">
-            <div class="trade-pnl" style="${c(clr)}">${pnl >= 0 ? '+' : ''}$${Math.abs(pnl).toFixed(2)}</div>
-            <div class="trade-tag" style="${c(clr)}">${isWin ? 'WON' : 'LOST'}</div>
-          </div>
-        </div>`;
-      });
-    }
+  if(state.view==='history'){
+    if(!data.resolved.length)h+=`<div class="empty">No settled trades yet.</div>`;
+    else[...data.resolved].reverse().forEach(t=>{const isW=t.result==='win';const pnl=isW?(t.contracts-t.cost):-t.cost;const cl=isW?'var(--green)':'var(--red)';const dt=new Date(t.timestamp*1000).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});h+=`<div class="trade-row"><div class="trade-info"><div class="trade-question">${t.question}</div><div class="trade-meta">${dt} · ${t.side} ${t.contracts}x @ $${t.price.toFixed(2)} · Edge ${(t.edge*100).toFixed(0)}%</div></div><div class="trade-result"><div class="trade-pnl" style="color:${cl}">${pnl>=0?'+':''}$${Math.abs(pnl).toFixed(2)}</div><div class="trade-tag" style="color:${cl}">${isW?'WON':'LOST'}</div></div></div>`;});
   }
 
-  html += `</div>`;
+  h+=`</div>`;
+  h+=`<div class="footer"><p>Sync command:</p><code>ssh root@174.138.84.53 'cat /root/polymarket-ai-bot/data/trades.json' | pbcopy</code><p>Then click "⬆ Sync Trades" and paste · Data persists in your browser</p></div>`;
 
-  // Footer
-  html += `
-  <div class="footer">
-    <p>Sync command:</p>
-    <code>ssh root@174.138.84.53 'cat /root/polymarket-ai-bot/data/trades.json' | pbcopy</code>
-    <p>Then click "⬆ Sync Trades" and paste</p>
-  </div>`;
-
-  // Modal
-  if (state.showModal) {
-    html += `
-    <div class="modal-overlay" onclick="closeModal(event)">
-      <div class="modal" onclick="event.stopPropagation()">
-        <h3>Sync Trade Data</h3>
-        <p>Run this in your terminal to copy trades to clipboard, then paste below:<br>
-        <code style="font-family:var(--mono);font-size:10px;color:var(--green);background:var(--bg);padding:2px 6px;border-radius:3px">ssh root@174.138.84.53 'cat /root/polymarket-ai-bot/data/trades.json' | pbcopy</code></p>
-        <textarea id="pasteArea" placeholder='Paste your trades.json content here...'></textarea>
-        <div class="modal-btns">
-          <button class="modal-btn modal-btn-cancel" onclick="state.showModal=false;render();">Cancel</button>
-          <button class="modal-btn modal-btn-save" onclick="importTrades()">Import</button>
-        </div>
-      </div>
-    </div>`;
+  if(state.showModal){
+    h+=`<div class="modal-overlay" onclick="closeModal(event)"><div class="modal" onclick="event.stopPropagation()"><h3>Sync Trade Data</h3><p>Run this in terminal, then paste below:<br><code style="font-family:var(--mono);font-size:10px;color:var(--green);background:var(--bg);padding:2px 6px;border-radius:3px">ssh root@174.138.84.53 'cat /root/polymarket-ai-bot/data/trades.json' | pbcopy</code></p><textarea id="pasteArea" placeholder="Paste trades.json here..."></textarea><div class="modal-btns"><button class="modal-btn modal-btn-cancel" onclick="state.showModal=false;render();">Cancel</button><button class="modal-btn modal-btn-save" onclick="importTrades()">Import</button></div></div></div>`;
   }
 
-  document.getElementById('app').innerHTML = html;
+  document.getElementById('app').innerHTML=h;
 }
 
-function statCard(label, value, sub, color) {
-  return `
-  <div class="stat-card">
-    <div class="stat-label">${label}</div>
-    <div class="stat-value" style="${c(color)}">${value}</div>
-    <div class="stat-sub">${sub}</div>
-  </div>`;
+function statCard(l,v,s,c){return`<div class="stat-card"><div class="stat-label">${l}</div><div class="stat-value" style="color:${c}">${v}</div><div class="stat-sub">${s}</div></div>`;}
+function setView(v){state.view=v;render();}
+function openModal(){state.showModal=true;render();setTimeout(()=>{const e=document.getElementById('pasteArea');if(e)e.focus();},100);}
+function closeModal(e){if(e.target.classList.contains('modal-overlay')){state.showModal=false;render();}}
+
+function importTrades(){
+  const el=document.getElementById('pasteArea');if(!el)return;
+  try{
+    const raw=JSON.parse(el.value.trim());
+    if(!Array.isArray(raw)||!raw.length){alert('Expected JSON array.');return;}
+    const norm=raw.map(t=>{
+      if(t.condition_id&&t.condition_id.startsWith('0x'))return{ticker:'POLY-'+((t.market_question||'').slice(0,12).replace(/\s/g,'-').toUpperCase()),question:t.market_question||'Unknown',category:'politics',side:t.side||'YES',price:t.price||0.5,contracts:Math.round(t.shares||0),cost:t.size_usdc||5,potential_profit:((t.shares||0)-(t.size_usdc||5)),edge:(t.edge_pct||10)/100,confidence:65,simulation:t.simulated!==false,timestamp:new Date(t.timestamp||t.saved_at||Date.now()).getTime()/1000,result:null};
+      return{...t,result:t.result||null};
+    });
+    state.trades=norm;saveTrades(norm);state.showModal=false;render();
+  }catch(e){alert('Could not parse JSON.');}
 }
 
-// ==========================================
-// ACTIONS
-// ==========================================
-function setView(v) {
-  state.view = v;
-  render();
-}
+function markResult(i,r){state.trades[i]={...state.trades[i],result:r};saveTrades(state.trades);render();}
 
-function openModal() {
-  state.showModal = true;
-  render();
-  setTimeout(() => {
-    const el = document.getElementById('pasteArea');
-    if (el) el.focus();
-  }, 100);
-}
+// Force fresh data on first load of v3
+if(!localStorage.getItem(STORAGE_KEY)){localStorage.setItem(STORAGE_KEY,JSON.stringify(REAL_TRADES));}
 
-function closeModal(e) {
-  if (e.target.classList.contains('modal-overlay')) {
-    state.showModal = false;
-    render();
-  }
-}
-
-function importTrades() {
-  const el = document.getElementById('pasteArea');
-  if (!el) return;
-  try {
-    const parsed = JSON.parse(el.value.trim());
-    if (Array.isArray(parsed) && parsed.length > 0) {
-      state.trades = parsed;
-      saveTrades(parsed);
-      state.showModal = false;
-      render();
-    } else {
-      alert('Invalid data — expected a JSON array of trades.');
-    }
-  } catch(e) {
-    alert('Could not parse JSON. Make sure you pasted the full trades.json content.');
-  }
-}
-
-function markResult(idx, result) {
-  state.trades[idx] = { ...state.trades[idx], result };
-  saveTrades(state.trades);
-  render();
-}
-
-// Initial render
 render();
 </script>
 </body>
