@@ -30,7 +30,6 @@
 body { background:var(--bg); color:var(--text); font-family:var(--sans); min-height:100vh; }
 .app { max-width:960px; margin:0 auto; padding:16px; }
 
-/* Header */
 .header { display:flex; align-items:center; justify-content:space-between; padding:16px 0; border-bottom:1px solid var(--border); margin-bottom:20px; }
 .header h1 { font-family:var(--mono); font-size:18px; font-weight:700; letter-spacing:-0.5px; }
 .header h1 span { color:var(--blue); }
@@ -40,7 +39,6 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
 .status-dot.off { background:var(--red); box-shadow:0 0 8px var(--red); animation:none; }
 @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.4} }
 
-/* Nav Tabs */
 .tabs { display:flex; gap:2px; background:var(--surface); border-radius:10px; padding:3px; margin-bottom:20px; }
 .tab { flex:1; padding:10px; text-align:center; font-size:13px; font-weight:500; border-radius:8px; cursor:pointer; color:var(--text2); transition:all 0.2s; }
 .tab:hover { color:var(--text); }
@@ -48,7 +46,6 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
 .panel { display:none; }
 .panel.active { display:block; }
 
-/* Stats Grid */
 .stats { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:20px; }
 @media(min-width:600px) { .stats { grid-template-columns:repeat(4,1fr); } }
 .stat { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; }
@@ -56,23 +53,20 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
 .stat-value { font-family:var(--mono); font-size:22px; font-weight:700; }
 .stat-value.green { color:var(--green); }
 .stat-value.red { color:var(--red); }
-.stat-sub { font-size:11px; color:var(--text2); margin-top:4px; font-family:var(--mono); }
 
-/* Big PnL */
 .pnl-hero { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:24px; text-align:center; margin-bottom:20px; }
 .pnl-amount { font-family:var(--mono); font-size:42px; font-weight:700; letter-spacing:-1px; }
 .pnl-label { font-size:12px; color:var(--text2); margin-top:4px; text-transform:uppercase; letter-spacing:1px; }
 
-/* Chart */
 .chart-box { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; margin-bottom:20px; }
 .chart-title { font-size:13px; color:var(--text2); margin-bottom:12px; }
-.chart-canvas { width:100%; height:180px; }
+.chart-canvas { width:100%; height:200px; }
 
-/* Trade Table */
 .trades-section { background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:20px; }
 .trades-header { padding:14px 16px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
 .trades-header h3 { font-size:14px; font-weight:600; }
-.trade-row { display:grid; grid-template-columns:1fr 70px 70px 70px; gap:8px; padding:12px 16px; border-bottom:1px solid var(--border); align-items:center; font-size:13px; }
+.trade-row { display:grid; grid-template-columns:1fr 90px 60px 65px 70px; gap:8px; padding:12px 16px; border-bottom:1px solid var(--border); align-items:center; font-size:13px; }
+@media(max-width:600px) { .trade-row { grid-template-columns:1fr 55px 55px 55px; } .trade-date-col { display:none !important; } }
 .trade-row:last-child { border-bottom:none; }
 .trade-row.header { font-size:11px; color:var(--text2); text-transform:uppercase; letter-spacing:0.5px; }
 .trade-market { font-family:var(--mono); font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -82,14 +76,16 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
 .trade-tag.pending { background:var(--yellow-bg); color:var(--yellow); }
 .trade-pnl { font-family:var(--mono); font-weight:600; text-align:right; }
 
-/* Sync Bar */
-.sync-bar { display:flex; gap:8px; margin-bottom:20px; }
+.last-updated { font-size:11px; color:var(--text2); font-family:var(--mono); text-align:right; margin-bottom:12px; padding:8px 12px; background:var(--surface); border:1px solid var(--border); border-radius:8px; }
+.last-updated .fresh { color:var(--green); }
+.last-updated .stale { color:var(--yellow); }
+
+.sync-bar { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
 .sync-btn { background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:10px 16px; border-radius:8px; cursor:pointer; font-size:13px; font-family:var(--sans); transition:all 0.15s; }
 .sync-btn:hover { background:var(--border); }
 .sync-btn.primary { background:var(--blue); border-color:var(--blue); }
 .sync-btn.primary:hover { background:#2563eb; }
 
-/* Settings Panel */
 .settings-group { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px; margin-bottom:16px; }
 .settings-group h3 { font-size:14px; font-weight:600; margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--border); }
 .setting-row { margin-bottom:20px; }
@@ -100,13 +96,9 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
 .setting-hint { font-size:11px; color:var(--text2); margin-top:4px; }
 .rec-badge { font-size:10px; background:var(--purple-bg); color:var(--purple); padding:2px 6px; border-radius:4px; font-family:var(--mono); font-weight:600; }
 
-/* Range Slider */
-.slider-wrap { position:relative; padding:0 0 4px; }
 input[type=range] { -webkit-appearance:none; width:100%; height:6px; border-radius:3px; background:var(--surface2); outline:none; }
 input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--blue); cursor:pointer; box-shadow:0 0 6px rgba(59,130,246,0.4); }
-.rec-marker { position:absolute; top:-2px; width:2px; height:10px; background:var(--purple); border-radius:1px; pointer-events:none; }
 
-/* Toggle */
 .toggle-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border); }
 .toggle-row:last-child { border-bottom:none; }
 .toggle-label { font-size:13px; }
@@ -117,30 +109,28 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; h
 .toggle input:checked + .slider { background:var(--blue); border-color:var(--blue); }
 .toggle input:checked + .slider:before { transform:translateX(20px); background:#fff; }
 
-/* Kill Switch */
 .kill-switch { display:flex; align-items:center; justify-content:space-between; background:var(--surface); border:2px solid var(--border); border-radius:10px; padding:16px 20px; margin-bottom:16px; }
 .kill-switch.on { border-color:var(--green); }
 .kill-switch.off { border-color:var(--red); }
 .kill-label { font-size:15px; font-weight:600; }
 .kill-status { font-family:var(--mono); font-size:13px; }
 
-/* Config output */
 .config-output { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:16px; font-family:var(--mono); font-size:12px; color:var(--text2); white-space:pre; overflow-x:auto; margin-top:16px; line-height:1.6; }
-.copy-config { margin-top:10px; }
 
-/* Sync modal */
 .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:100; align-items:center; justify-content:center; }
 .modal-overlay.show { display:flex; }
 .modal { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:24px; max-width:500px; width:90%; }
 .modal h3 { margin-bottom:12px; }
 .modal textarea { width:100%; height:200px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:12px; font-family:var(--mono); font-size:12px; color:var(--text); resize:none; }
 .modal-actions { display:flex; gap:8px; margin-top:12px; justify-content:flex-end; }
+.sync-steps { font-size:12px; color:var(--text2); margin-bottom:12px; line-height:1.8; }
+.sync-steps code { background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:6px 10px; font-family:var(--mono); font-size:11px; display:block; margin:6px 0; cursor:pointer; user-select:all; transition:border-color 0.15s; }
+.sync-steps code:hover { border-color:var(--blue); }
 </style>
 </head>
 <body>
 <div class="app">
 
-<!-- Header -->
 <div class="header">
   <h1>KALSHI <span>BOT</span></h1>
   <div class="bot-status">
@@ -149,67 +139,56 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; h
   </div>
 </div>
 
-<!-- Tabs -->
 <div class="tabs">
   <div class="tab active" data-tab="overview">Overview</div>
   <div class="tab" data-tab="trades">Trades</div>
   <div class="tab" data-tab="settings">⚙ Settings</div>
 </div>
 
-<!-- OVERVIEW PANEL -->
+<!-- OVERVIEW -->
 <div class="panel active" id="overview">
+  <div class="last-updated" id="lastUpdated">No data synced yet</div>
   <div class="pnl-hero">
     <div class="pnl-amount" id="pnlAmount">$0.00</div>
     <div class="pnl-label">Simulated P&L</div>
   </div>
-
   <div class="stats">
-    <div class="stat">
-      <div class="stat-label">Win Rate</div>
-      <div class="stat-value" id="winRate">—</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Total Trades</div>
-      <div class="stat-value" id="totalTrades">0</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Pending</div>
-      <div class="stat-value" id="pendingCount">0</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Total Invested</div>
-      <div class="stat-value" id="totalInvested">$0</div>
-    </div>
+    <div class="stat"><div class="stat-label">Win Rate</div><div class="stat-value" id="winRate">—</div></div>
+    <div class="stat"><div class="stat-label">Total Trades</div><div class="stat-value" id="totalTrades">0</div></div>
+    <div class="stat"><div class="stat-label">Pending</div><div class="stat-value" id="pendingCount">0</div></div>
+    <div class="stat"><div class="stat-label">Total Invested</div><div class="stat-value" id="totalInvested">$0</div></div>
   </div>
-
   <div class="chart-box">
     <div class="chart-title">Cumulative P&L</div>
     <canvas class="chart-canvas" id="pnlChart"></canvas>
   </div>
-
   <div class="sync-bar">
-    <button class="sync-btn primary" onclick="openSyncModal()">⬆ Sync Trades</button>
+    <button class="sync-btn primary" onclick="openSyncModal()">⬆ Sync Trades from VPS</button>
     <button class="sync-btn" onclick="exportData()">⬇ Export</button>
     <button class="sync-btn" onclick="clearData()">✕ Clear</button>
   </div>
 </div>
 
-<!-- TRADES PANEL -->
+<!-- TRADES -->
 <div class="panel" id="trades">
+  <div class="last-updated" id="lastUpdatedTrades">No data synced yet</div>
   <div class="trades-section">
     <div class="trades-header">
       <h3>All Trades</h3>
+      <span style="font-size:12px;color:var(--text2);font-family:var(--mono)" id="tradeCount">0 trades</span>
     </div>
     <div class="trade-row header">
-      <span>Market</span><span>Cost</span><span>Result</span><span style="text-align:right">P&L</span>
+      <span>Market</span><span class="trade-date-col">Date</span><span>Cost</span><span>Result</span><span style="text-align:right">P&L</span>
     </div>
     <div id="tradesList"></div>
   </div>
+  <div class="sync-bar">
+    <button class="sync-btn primary" onclick="openSyncModal()">⬆ Sync Trades from VPS</button>
+  </div>
 </div>
 
-<!-- SETTINGS PANEL -->
+<!-- SETTINGS -->
 <div class="panel" id="settings">
-  <!-- Kill Switch -->
   <div class="kill-switch on" id="killSwitch">
     <div>
       <div class="kill-label">Bot Enabled</div>
@@ -221,114 +200,62 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; h
     </label>
   </div>
 
-  <!-- Trading Limits -->
   <div class="settings-group">
     <h3>Trading Limits</h3>
-
     <div class="setting-row">
-      <div class="setting-label">
-        <span>Daily Spend Cap</span>
-        <span class="val" id="dailyLimitVal">$25</span>
-      </div>
-      <div class="slider-wrap">
-        <input type="range" min="5" max="200" value="25" step="5" id="dailyLimit" oninput="updateSlider('dailyLimit','$')">
-        <div class="rec-marker" style="left:calc((25 - 5) / (200 - 5) * 100%)"></div>
-      </div>
-      <div class="setting-hint">Recommended: <span class="rec-badge">$25</span> — Max total spent per day across all trades</div>
+      <div class="setting-label"><span>Daily Spend Cap</span><span class="val" id="dailyLimitVal">$25</span></div>
+      <input type="range" min="5" max="200" value="25" step="5" id="dailyLimit" oninput="updateSlider('dailyLimit','$')">
+      <div class="setting-hint">Max $ the bot can spend per day <span class="rec-badge">Rec: $25</span></div>
     </div>
-
     <div class="setting-row">
-      <div class="setting-label">
-        <span>Per Trade Size</span>
-        <span class="val" id="perTradeVal">$5</span>
-      </div>
-      <div class="slider-wrap">
-        <input type="range" min="1" max="50" value="5" step="1" id="perTrade" oninput="updateSlider('perTrade','$')">
-        <div class="rec-marker" style="left:calc((5 - 1) / (50 - 1) * 100%)"></div>
-      </div>
-      <div class="setting-hint">Recommended: <span class="rec-badge">$5</span> — Amount risked on each individual trade</div>
+      <div class="setting-label"><span>Per-Trade Amount</span><span class="val" id="perTradeVal">$5</span></div>
+      <input type="range" min="1" max="50" value="5" step="1" id="perTrade" oninput="updateSlider('perTrade','$')">
+      <div class="setting-hint">Max cost per individual trade <span class="rec-badge">Rec: $5</span></div>
     </div>
-
     <div class="setting-row">
-      <div class="setting-label">
-        <span>Max Trades Per Day</span>
-        <span class="val" id="maxTradesVal">6</span>
-      </div>
-      <div class="slider-wrap">
-        <input type="range" min="1" max="20" value="6" step="1" id="maxTrades" oninput="updateSlider('maxTrades','')">
-        <div class="rec-marker" style="left:calc((6 - 1) / (20 - 1) * 100%)"></div>
-      </div>
-      <div class="setting-hint">Recommended: <span class="rec-badge">6</span> — Prevents over-trading on a single day</div>
+      <div class="setting-label"><span>Max Trades / Day</span><span class="val" id="maxTradesVal">6</span></div>
+      <input type="range" min="1" max="20" value="6" step="1" id="maxTrades" oninput="updateSlider('maxTrades','')">
+      <div class="setting-hint">Stop after this many trades per day <span class="rec-badge">Rec: 6</span></div>
     </div>
   </div>
 
-  <!-- AI Thresholds -->
   <div class="settings-group">
     <h3>AI Thresholds</h3>
-
     <div class="setting-row">
-      <div class="setting-label">
-        <span>Min Confidence</span>
-        <span class="val" id="minConfVal">70%</span>
-      </div>
-      <div class="slider-wrap">
-        <input type="range" min="30" max="95" value="70" step="5" id="minConf" oninput="updateSlider('minConf','%')">
-        <div class="rec-marker" style="left:calc((70 - 30) / (95 - 30) * 100%)"></div>
-      </div>
-      <div class="setting-hint">Recommended: <span class="rec-badge">70%</span> — Claude must be this confident to trigger a trade</div>
+      <div class="setting-label"><span>Min Confidence</span><span class="val" id="minConfVal">70%</span></div>
+      <input type="range" min="30" max="95" value="70" step="5" id="minConf" oninput="updateSlider('minConf','%')">
+      <div class="setting-hint">Skip trades below this Claude confidence <span class="rec-badge">Rec: 70%</span></div>
     </div>
-
     <div class="setting-row">
-      <div class="setting-label">
-        <span>Min Edge</span>
-        <span class="val" id="minEdgeVal">10%</span>
-      </div>
-      <div class="slider-wrap">
-        <input type="range" min="3" max="30" value="10" step="1" id="minEdge" oninput="updateSlider('minEdge','%')">
-        <div class="rec-marker" style="left:calc((10 - 3) / (30 - 3) * 100%)"></div>
-      </div>
-      <div class="setting-hint">Recommended: <span class="rec-badge">10%</span> — Gap between Claude's probability and market price needed to trade</div>
+      <div class="setting-label"><span>Min Edge</span><span class="val" id="minEdgeVal">10%</span></div>
+      <input type="range" min="3" max="30" value="10" step="1" id="minEdge" oninput="updateSlider('minEdge','%')">
+      <div class="setting-hint">Minimum predicted edge over market price <span class="rec-badge">Rec: 8%</span></div>
     </div>
   </div>
 
-  <!-- Markets -->
   <div class="settings-group">
-    <h3>Enabled Markets</h3>
-    <div class="toggle-row">
-      <span class="toggle-label">🌤 Weather</span>
-      <label class="toggle"><input type="checkbox" id="mktWeather" checked><span class="slider"></span></label>
-    </div>
-    <div class="toggle-row">
-      <span class="toggle-label">🏛 Politics</span>
-      <label class="toggle"><input type="checkbox" id="mktPolitics"><span class="slider"></span></label>
-    </div>
-    <div class="toggle-row">
-      <span class="toggle-label">₿ Crypto</span>
-      <label class="toggle"><input type="checkbox" id="mktCrypto"><span class="slider"></span></label>
-    </div>
-    <div class="toggle-row">
-      <span class="toggle-label">📈 Finance</span>
-      <label class="toggle"><input type="checkbox" id="mktFinance"><span class="slider"></span></label>
-    </div>
+    <h3>Market Types</h3>
+    <div class="toggle-row"><span class="toggle-label">🌤 Weather</span><label class="toggle"><input type="checkbox" id="mktWeather" checked><span class="slider"></span></label></div>
+    <div class="toggle-row"><span class="toggle-label">🏛 Politics</span><label class="toggle"><input type="checkbox" id="mktPolitics"><span class="slider"></span></label></div>
+    <div class="toggle-row"><span class="toggle-label">₿ Crypto</span><label class="toggle"><input type="checkbox" id="mktCrypto"><span class="slider"></span></label></div>
+    <div class="toggle-row"><span class="toggle-label">📈 Finance</span><label class="toggle"><input type="checkbox" id="mktFinance"><span class="slider"></span></label></div>
   </div>
 
-  <!-- Safety -->
   <div class="settings-group">
     <h3>Safety</h3>
     <div class="toggle-row">
-      <span class="toggle-label">Conflict Detection <span style="color:var(--text2);font-size:11px">— prevents contradictory bets</span></span>
+      <span class="toggle-label">Conflict Detection <span style="font-size:11px;color:var(--text2)">(prevent opposing bets)</span></span>
       <label class="toggle"><input type="checkbox" id="conflictDetect" checked><span class="slider"></span></label>
     </div>
     <div class="toggle-row">
-      <span class="toggle-label">Duplicate Prevention <span style="color:var(--text2);font-size:11px">— prevents same ticker twice</span></span>
+      <span class="toggle-label">Duplicate Prevention <span style="font-size:11px;color:var(--text2)">(1 trade per ticker/day)</span></span>
       <label class="toggle"><input type="checkbox" id="dupePrevent" checked><span class="slider"></span></label>
     </div>
   </div>
 
-  <!-- Generated Config -->
   <div class="settings-group">
     <h3>Generated Config</h3>
-    <p style="font-size:12px;color:var(--text2);margin-bottom:10px;">Copy this config and push to your GitHub repo. The bot pulls it before each cycle.</p>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:10px;">Adjust settings above, then push to your VPS.</p>
     <div class="config-output" id="configOutput"></div>
     <div style="display:flex;gap:8px;margin-top:10px;">
       <button class="sync-btn primary" onclick="copyConfig()">📋 Copy Config</button>
@@ -343,9 +270,12 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; h
 <div class="modal-overlay" id="syncModal">
   <div class="modal">
     <h3>Sync Trade Data</h3>
-    <p style="font-size:12px;color:var(--text2);margin-bottom:10px;">Run this on your Mac, then paste the output below:</p>
-    <div class="config-output" style="margin-bottom:12px;font-size:11px;">ssh root@174.138.84.53 'cat /root/polymarket-ai-bot/data/trades.json'</div>
-    <textarea id="syncInput" placeholder="Paste trades.json content here..."></textarea>
+    <div class="sync-steps">
+      <strong>Step 1:</strong> Run this in your terminal (click to copy):
+      <code onclick="navigator.clipboard.writeText(this.textContent);this.style.borderColor='#22c55e';setTimeout(()=>this.style.borderColor='',1000)">ssh kalshi 'cat /root/polymarket-ai-bot/data/trades.json'</code>
+      <strong>Step 2:</strong> Copy ALL the output, then paste below:
+    </div>
+    <textarea id="syncInput" placeholder="Paste the full JSON output here..."></textarea>
     <div class="modal-actions">
       <button class="sync-btn" onclick="closeSyncModal()">Cancel</button>
       <button class="sync-btn primary" onclick="importTrades()">Import</button>
@@ -354,29 +284,15 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; h
 </div>
 
 <script>
-// ===== TRADE DATA =====
-// Real trades from VPS as of Feb 11, 2026
-const DEFAULT_TRADES = [
-  {id:1,ticker:"KXHIGHNY-26FEB12-B38.5",market:"NYC High 38-39°F Feb 12",side:"YES",price:0.12,qty:32,cost:3.84,potential:28.16,edge:0.08,confidence:0.75,ts:"2026-02-11T20:20:14",result:"loss",pnl:-3.84},
-  {id:2,ticker:"KXHIGHNY-26FEB12-B34.5",market:"NYC High 34-35°F Feb 12",side:"YES",price:0.30,qty:21,cost:6.30,potential:14.70,edge:0.15,confidence:0.80,ts:"2026-02-11T20:20:14",result:"win",pnl:14.70},
-  {id:3,ticker:"KXHIGHCHI-26FEB12-T38",market:"Chicago High <38°F Feb 12",side:"YES",price:0.22,qty:28,cost:6.16,potential:21.84,edge:0.13,confidence:0.75,ts:"2026-02-11T20:20:14",result:"loss",pnl:-6.16},
-  {id:4,ticker:"KXHIGHCHI-26FEB12-B42.5",market:"Chicago High 42-43°F Feb 12",side:"YES",price:0.12,qty:52,cost:6.24,potential:45.76,edge:0.13,confidence:0.70,ts:"2026-02-11T20:20:14",result:"loss",pnl:-6.24},
-  {id:5,ticker:"KXHIGHNY-26FEB12-B38.5",market:"NYC High 38-39°F Feb 12 (dup)",side:"YES",price:0.12,qty:32,cost:3.84,potential:28.16,edge:0.08,confidence:0.75,ts:"2026-02-11T20:22:14",result:"loss",pnl:-3.84},
-  {id:6,ticker:"KXHIGHNY-26FEB12-B34.5",market:"NYC High 34-35°F Feb 12 (dup)",side:"YES",price:0.30,qty:21,cost:6.30,potential:14.70,edge:0.15,confidence:0.80,ts:"2026-02-11T20:22:14",result:"win",pnl:14.70},
-  {id:7,ticker:"KXHIGHCHI-26FEB12-T38",market:"Chicago High <38°F Feb 12 (dup)",side:"YES",price:0.22,qty:28,cost:6.16,potential:21.84,edge:0.13,confidence:0.75,ts:"2026-02-11T20:22:14",result:"loss",pnl:-6.16},
-  {id:8,ticker:"KXHIGHNY-26FEB12-B38.5",market:"NYC High 38-39°F Feb 12",side:"YES",price:0.12,qty:32,cost:3.84,potential:28.16,edge:0.08,confidence:0.75,ts:"2026-02-12T01:20:14",result:"loss",pnl:-3.84},
-  {id:9,ticker:"KXHIGHNY-26FEB12-B34.5",market:"NYC High 34-35°F Feb 12",side:"YES",price:0.30,qty:21,cost:6.30,potential:14.70,edge:0.15,confidence:0.80,ts:"2026-02-12T01:20:14",result:"win",pnl:14.70},
-  {id:10,ticker:"KXHIGHCHI-26FEB12-T38",market:"Chicago High <38°F Feb 12",side:"YES",price:0.22,qty:28,cost:6.16,potential:21.84,edge:0.13,confidence:0.75,ts:"2026-02-12T01:20:14",result:"loss",pnl:-6.16},
-  {id:11,ticker:"KXHIGHCHI-26FEB12-B42.5",market:"Chicago High 42-43°F Feb 12",side:"YES",price:0.12,qty:52,cost:6.24,potential:45.76,edge:0.13,confidence:0.70,ts:"2026-02-12T01:20:14",result:"loss",pnl:-6.24},
-  {id:12,ticker:"KXHIGHNY-26FEB12-B38.5",market:"NYC High 38-39°F Feb 12",side:"YES",price:0.12,qty:32,cost:3.84,potential:28.16,edge:0.08,confidence:0.75,ts:"2026-02-12T01:22:14",result:"loss",pnl:-3.84},
-  {id:13,ticker:"KXHIGHNY-26FEB12-B34.5",market:"NYC High 34-35°F Feb 12",side:"YES",price:0.30,qty:21,cost:6.30,potential:14.70,edge:0.15,confidence:0.80,ts:"2026-02-12T01:22:14",result:"win",pnl:14.70},
-  {id:14,ticker:"KXHIGHCHI-26FEB12-T38",market:"Chicago High <38°F Feb 12",side:"YES",price:0.22,qty:28,cost:6.16,potential:21.84,edge:0.13,confidence:0.75,ts:"2026-02-12T01:22:14",result:"loss",pnl:-6.16},
-];
-
 // ===== STATE =====
-let trades = JSON.parse(localStorage.getItem('kalshi_trades') || 'null') || DEFAULT_TRADES;
+let trades = JSON.parse(localStorage.getItem('kalshi_trades_v2') || '[]');
+let lastSyncTime = localStorage.getItem('kalshi_last_sync') || null;
 
-function saveTrades() { localStorage.setItem('kalshi_trades', JSON.stringify(trades)); }
+function saveTrades() {
+  localStorage.setItem('kalshi_trades_v2', JSON.stringify(trades));
+  lastSyncTime = new Date().toISOString();
+  localStorage.setItem('kalshi_last_sync', lastSyncTime);
+}
 
 // ===== TABS =====
 document.querySelectorAll('.tab').forEach(t => {
@@ -388,6 +304,48 @@ document.querySelectorAll('.tab').forEach(t => {
     if (t.dataset.tab === 'settings') generateConfig();
   });
 });
+
+// ===== HELPERS =====
+function parseTs(ts) {
+  if (!ts) return null;
+  if (typeof ts === 'number') return new Date(ts > 1e12 ? ts : ts * 1000);
+  const d = new Date(ts);
+  return isNaN(d.getTime()) ? null : d;
+}
+
+function formatDate(ts) {
+  const d = parseTs(ts);
+  if (!d) return '—';
+  const mon = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const h = d.getHours(), m = d.getMinutes();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  return `${mon[d.getMonth()]} ${d.getDate()} ${h%12||12}:${String(m).padStart(2,'0')}${ampm}`;
+}
+
+function formatDateShort(ts) {
+  const d = parseTs(ts);
+  if (!d) return '—';
+  return `${d.getMonth()+1}/${d.getDate()}`;
+}
+
+function updateSyncBanner() {
+  const els = [document.getElementById('lastUpdated'), document.getElementById('lastUpdatedTrades')];
+  if (!lastSyncTime || !trades.length) {
+    els.forEach(el => { if(el) el.innerHTML = 'No trades synced yet — click <b>Sync Trades from VPS</b>'; });
+    return;
+  }
+  const ago = Date.now() - new Date(lastSyncTime).getTime();
+  const mins = Math.floor(ago / 60000), hrs = Math.floor(mins / 60);
+  let agoStr = mins < 1 ? 'just now' : mins < 60 ? mins + 'm ago' : hrs < 24 ? hrs + 'h ago' : Math.floor(hrs/24) + 'd ago';
+  const cls = hrs < 1 ? 'fresh' : 'stale';
+  const newest = trades.reduce((max, t) => {
+    const d = parseTs(t.ts || t.timestamp);
+    return d && d > max ? d : max;
+  }, new Date(0));
+  els.forEach(el => {
+    if(el) el.innerHTML = `Synced <span class="${cls}">${agoStr}</span> · ${trades.length} trades · Latest: ${formatDate(newest)}`;
+  });
+}
 
 // ===== OVERVIEW =====
 function renderOverview() {
@@ -402,12 +360,12 @@ function renderOverview() {
   pnlEl.className = 'pnl-amount ' + (totalPnl >= 0 ? 'green' : 'red');
 
   document.getElementById('winRate').textContent = resolved.length ? Math.round(wins.length / resolved.length * 100) + '%' : '—';
-  document.getElementById('winRate').className = 'stat-value ' + (wins.length / resolved.length >= 0.5 ? 'green' : 'red');
+  if (resolved.length) document.getElementById('winRate').className = 'stat-value ' + (wins.length / resolved.length >= 0.5 ? 'green' : 'red');
   document.getElementById('totalTrades').textContent = trades.length;
   document.getElementById('pendingCount').textContent = pending.length;
   document.getElementById('totalInvested').textContent = '$' + totalCost.toFixed(2);
-
   drawChart(resolved);
+  updateSyncBanner();
 }
 
 function drawChart(resolved) {
@@ -420,9 +378,7 @@ function drawChart(resolved) {
   ctx.clearRect(0, 0, W, H);
 
   if (resolved.length < 2) {
-    ctx.fillStyle = '#8896ab';
-    ctx.font = '13px DM Sans';
-    ctx.textAlign = 'center';
+    ctx.fillStyle = '#8896ab'; ctx.font = '13px DM Sans'; ctx.textAlign = 'center';
     ctx.fillText('Need more resolved trades for chart', W/2, H/2);
     return;
   }
@@ -431,55 +387,74 @@ function drawChart(resolved) {
   const pts = resolved.map(t => { cum += t.pnl; return cum; });
   const mn = Math.min(0, ...pts), mx = Math.max(0, ...pts);
   const range = mx - mn || 1;
-  const pad = 20;
+  const padL = 52, padR = 16, padT = 16, padB = 28;
+  const cW = W - padL - padR, cH = H - padT - padB;
+
+  // Y-axis labels + grid
+  ctx.fillStyle = '#8896ab'; ctx.font = '11px JetBrains Mono'; ctx.textAlign = 'right';
+  for (let i = 0; i <= 4; i++) {
+    const val = mx - (i / 4) * range;
+    const y = padT + (i / 4) * cH;
+    ctx.fillText((val >= 0 ? '+' : '') + '$' + val.toFixed(0), padL - 6, y + 4);
+    ctx.strokeStyle = '#1e2a3a'; ctx.lineWidth = 0.5; ctx.setLineDash([2,3]);
+    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(W - padR, y); ctx.stroke();
+  }
+  ctx.setLineDash([]);
+
+  // X-axis dates
+  ctx.textAlign = 'center'; ctx.fillStyle = '#8896ab'; ctx.font = '10px JetBrains Mono';
+  const xCount = Math.min(resolved.length, 6);
+  for (let i = 0; i < xCount; i++) {
+    const idx = Math.floor(i * (resolved.length - 1) / Math.max(xCount - 1, 1));
+    ctx.fillText(formatDateShort(resolved[idx].ts), padL + (idx / (pts.length - 1)) * cW, H - 4);
+  }
 
   // Zero line
-  const zeroY = pad + (mx / range) * (H - 2*pad);
-  ctx.strokeStyle = '#1e2a3a';
-  ctx.lineWidth = 1;
-  ctx.setLineDash([4,4]);
-  ctx.beginPath();
-  ctx.moveTo(pad, zeroY);
-  ctx.lineTo(W-pad, zeroY);
-  ctx.stroke();
+  const zeroY = padT + (mx / range) * cH;
+  ctx.strokeStyle = '#3b4a5a'; ctx.lineWidth = 1; ctx.setLineDash([4,4]);
+  ctx.beginPath(); ctx.moveTo(padL, zeroY); ctx.lineTo(W - padR, zeroY); ctx.stroke();
   ctx.setLineDash([]);
 
   // PnL line
   ctx.beginPath();
   pts.forEach((p, i) => {
-    const x = pad + (i / (pts.length-1)) * (W - 2*pad);
-    const y = pad + ((mx - p) / range) * (H - 2*pad);
+    const x = padL + (i / (pts.length - 1)) * cW;
+    const y = padT + ((mx - p) / range) * cH;
     i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
   });
-  const lastPnl = pts[pts.length-1];
-  ctx.strokeStyle = lastPnl >= 0 ? '#22c55e' : '#ef4444';
-  ctx.lineWidth = 2;
-  ctx.stroke();
+  const lastPnl = pts[pts.length - 1];
+  ctx.strokeStyle = lastPnl >= 0 ? '#22c55e' : '#ef4444'; ctx.lineWidth = 2.5; ctx.stroke();
 
   // Fill
-  const lastX = pad + (1) * (W - 2*pad);
-  ctx.lineTo(lastX, zeroY);
-  ctx.lineTo(pad, zeroY);
-  ctx.closePath();
-  ctx.fillStyle = lastPnl >= 0 ? 'rgba(34,197,94,0.08)' : 'rgba(239,68,68,0.08)';
-  ctx.fill();
+  ctx.lineTo(padL + cW, zeroY); ctx.lineTo(padL, zeroY); ctx.closePath();
+  ctx.fillStyle = lastPnl >= 0 ? 'rgba(34,197,94,0.06)' : 'rgba(239,68,68,0.06)'; ctx.fill();
 
   // Dots
   pts.forEach((p, i) => {
-    const x = pad + (i / (pts.length-1)) * (W - 2*pad);
-    const y = pad + ((mx - p) / range) * (H - 2*pad);
-    ctx.beginPath();
-    ctx.arc(x, y, 3, 0, Math.PI*2);
-    ctx.fillStyle = p >= 0 ? '#22c55e' : '#ef4444';
-    ctx.fill();
+    const x = padL + (i / (pts.length - 1)) * cW;
+    const y = padT + ((mx - p) / range) * cH;
+    ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2);
+    ctx.fillStyle = p >= 0 ? '#22c55e' : '#ef4444'; ctx.fill();
   });
+
+  // End label
+  ctx.fillStyle = lastPnl >= 0 ? '#22c55e' : '#ef4444';
+  ctx.font = 'bold 12px JetBrains Mono'; ctx.textAlign = 'right';
+  const endY = padT + ((mx - lastPnl) / range) * cH;
+  ctx.fillText((lastPnl >= 0 ? '+' : '') + '$' + lastPnl.toFixed(2), padL + cW - 4, endY - 8);
 }
 
 // ===== TRADES LIST =====
 function renderTrades() {
   const list = document.getElementById('tradesList');
   list.innerHTML = '';
-  const sorted = [...trades].reverse();
+  const sorted = [...trades].sort((a, b) => {
+    const ta = parseTs(a.ts || a.timestamp) || new Date(0);
+    const tb = parseTs(b.ts || b.timestamp) || new Date(0);
+    return tb - ta;
+  });
+  document.getElementById('tradeCount').textContent = trades.length + ' trades';
+
   sorted.forEach(t => {
     const row = document.createElement('div');
     row.className = 'trade-row';
@@ -487,13 +462,15 @@ function renderTrades() {
     const pnlStr = res === 'pending' ? '—' : (t.pnl >= 0 ? '+' : '') + '$' + (t.pnl||0).toFixed(2);
     const pnlClass = res === 'win' ? 'green' : res === 'loss' ? 'red' : '';
     row.innerHTML = `
-      <span class="trade-market" title="${t.ticker}">${t.market || t.ticker}</span>
+      <span class="trade-market" title="${t.ticker||''}">${t.market || t.question || t.ticker || '—'}</span>
+      <span class="trade-date-col" style="font-family:var(--mono);font-size:11px;color:var(--text2)">${formatDate(t.ts||t.timestamp)}</span>
       <span style="font-family:var(--mono);font-size:12px">$${(t.cost||0).toFixed(2)}</span>
       <span><span class="trade-tag ${res}">${res.toUpperCase()}</span></span>
       <span class="trade-pnl ${pnlClass}">${pnlStr}</span>
     `;
     list.appendChild(row);
   });
+  updateSyncBanner();
 }
 
 // ===== SYNC =====
@@ -505,67 +482,52 @@ function importTrades() {
   try {
     const data = JSON.parse(raw);
     const arr = Array.isArray(data) ? data : data.trades || [];
-    if (!arr.length) { alert('No trades found in data'); return; }
-    // Merge — normalize fields
-    const normalized = arr.map((t, i) => ({
-      id: t.id || i+1,
-      ticker: t.ticker || t.market_id || '',
-      market: t.title || t.market || t.ticker || '',
+    if (!arr.length) { alert('No trades found'); return; }
+    trades = arr.map((t, i) => ({
+      id: t.id || i + 1,
+      ticker: t.ticker || t.condition_id || '',
+      market: t.question || t.market_question || t.market || t.title || t.ticker || '',
       side: t.side || 'YES',
       price: t.price || t.entry_price || 0,
-      qty: t.quantity || t.qty || 0,
-      cost: t.cost || (t.price * t.quantity) || 0,
+      qty: t.contracts || t.quantity || t.qty || 0,
+      cost: t.cost || t.size_usdc || 0,
       potential: t.potential_profit || t.potential || 0,
-      edge: t.edge || 0,
+      edge: t.edge_pct || t.edge || 0,
       confidence: t.confidence || 0,
-      ts: t.timestamp || t.ts || new Date().toISOString(),
+      ts: t.timestamp || t.ts || t.saved_at || new Date().toISOString(),
       result: t.result || 'pending',
       pnl: t.pnl || 0,
+      simulation: t.simulation !== undefined ? t.simulation : (t.simulated !== undefined ? t.simulated : true),
     }));
-    trades = normalized;
     saveTrades();
     renderAll();
     closeSyncModal();
     document.getElementById('syncInput').value = '';
-  } catch(e) {
-    alert('Invalid JSON: ' + e.message);
-  }
+  } catch(e) { alert('Invalid JSON: ' + e.message); }
 }
 
 function exportData() {
-  const blob = new Blob([JSON.stringify(trades, null, 2)], {type:'application/json'});
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'kalshi-trades.json';
-  a.click();
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(trades,null,2)],{type:'application/json'}));
+  a.download = 'kalshi-trades.json'; a.click();
 }
 
 function clearData() {
-  if (confirm('Clear all trade data? This cannot be undone.')) {
-    trades = [];
-    saveTrades();
-    renderAll();
-  }
+  if (confirm('Clear all trade data?')) { trades = []; saveTrades(); renderAll(); }
 }
 
 // ===== SETTINGS =====
 function updateSlider(id, prefix) {
-  const el = document.getElementById(id);
-  document.getElementById(id + 'Val').textContent = prefix + el.value + (prefix === '%' ? '' : prefix === '$' ? '' : '');
-  if (prefix === '$') document.getElementById(id + 'Val').textContent = '$' + el.value;
-  if (prefix === '%') document.getElementById(id + 'Val').textContent = el.value + '%';
-  if (prefix === '') document.getElementById(id + 'Val').textContent = el.value;
+  const v = document.getElementById(id).value;
+  document.getElementById(id+'Val').textContent = prefix === '$' ? '$'+v : prefix === '%' ? v+'%' : v;
   generateConfig();
 }
-
 function updateKillSwitch() {
   const on = document.getElementById('botEnabled').checked;
-  const sw = document.getElementById('killSwitch');
-  sw.className = 'kill-switch ' + (on ? 'on' : 'off');
+  document.getElementById('killSwitch').className = 'kill-switch ' + (on ? 'on' : 'off');
   document.getElementById('killStatus').textContent = on ? 'Trading active' : 'TRADING PAUSED';
   generateConfig();
 }
-
 function generateConfig() {
   const config = {
     bot_enabled: document.getElementById('botEnabled').checked,
@@ -574,104 +536,56 @@ function generateConfig() {
     min_confidence: parseInt(document.getElementById('minConf').value),
     min_edge_pct: parseInt(document.getElementById('minEdge').value),
     max_trades_per_day: parseInt(document.getElementById('maxTrades').value),
-    markets_enabled: {
-      weather: document.getElementById('mktWeather').checked,
-      politics: document.getElementById('mktPolitics').checked,
-      crypto: document.getElementById('mktCrypto').checked,
-      finance: document.getElementById('mktFinance').checked,
-    },
+    markets_enabled: { weather: document.getElementById('mktWeather').checked, politics: document.getElementById('mktPolitics').checked, crypto: document.getElementById('mktCrypto').checked, finance: document.getElementById('mktFinance').checked },
     conflict_detection: document.getElementById('conflictDetect').checked,
     duplicate_prevention: document.getElementById('dupePrevent').checked,
-    updated_at: new Date().toISOString(),
-    updated_by: "dashboard"
+    updated_at: new Date().toISOString(), updated_by: "dashboard"
   };
   document.getElementById('configOutput').textContent = JSON.stringify(config, null, 2);
 }
-
 function copyConfig() {
-  const text = document.getElementById('configOutput').textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = event.target;
-    btn.textContent = '✓ Copied!';
-    setTimeout(() => btn.textContent = '📋 Copy Config', 1500);
+  navigator.clipboard.writeText(document.getElementById('configOutput').textContent).then(() => {
+    event.target.textContent = '✓ Copied!'; setTimeout(() => event.target.textContent = '📋 Copy Config', 1500);
   });
 }
-
 function copySshCommand() {
   const config = document.getElementById('configOutput').textContent;
-  const escaped = config.replace(/'/g, "'\\''");
-  const cmd = `ssh root@174.138.84.53 'cat > /root/polymarket-ai-bot/config.json << ENDCFG\n${config}\nENDCFG'`;
-  navigator.clipboard.writeText(cmd).then(() => {
-    const btn = event.target;
-    btn.textContent = '✓ Copied!';
-    setTimeout(() => btn.textContent = '📋 Copy SSH Push Command', 1500);
+  navigator.clipboard.writeText(`ssh kalshi 'cat > /root/polymarket-ai-bot/config.json << ENDCFG\n${config}\nENDCFG'`).then(() => {
+    event.target.textContent = '✓ Copied!'; setTimeout(() => event.target.textContent = '📋 Copy SSH Push Command', 1500);
   });
 }
 
 // ===== INIT =====
-function renderAll() {
-  renderOverview();
-  renderTrades();
-  generateConfig();
-}
+function renderAll() { renderOverview(); renderTrades(); generateConfig(); }
 
-// ===== SETTINGS PERSISTENCE (URL hash) =====
+// ===== SETTINGS PERSISTENCE =====
 function saveSettingsToHash() {
-  const s = {
-    e: document.getElementById('botEnabled').checked ? 1 : 0,
-    d: document.getElementById('dailyLimit').value,
-    p: document.getElementById('perTrade').value,
-    m: document.getElementById('maxTrades').value,
-    c: document.getElementById('minConf').value,
-    g: document.getElementById('minEdge').value,
-    w: document.getElementById('mktWeather').checked ? 1 : 0,
-    po: document.getElementById('mktPolitics').checked ? 1 : 0,
-    cr: document.getElementById('mktCrypto').checked ? 1 : 0,
-    f: document.getElementById('mktFinance').checked ? 1 : 0,
-    cd: document.getElementById('conflictDetect').checked ? 1 : 0,
-    dp: document.getElementById('dupePrevent').checked ? 1 : 0,
-  };
-  const params = Object.entries(s).map(([k,v]) => k+'='+v).join('&');
-  history.replaceState(null, '', '#' + params);
+  const s = { e:document.getElementById('botEnabled').checked?1:0, d:document.getElementById('dailyLimit').value, p:document.getElementById('perTrade').value, m:document.getElementById('maxTrades').value, c:document.getElementById('minConf').value, g:document.getElementById('minEdge').value, w:document.getElementById('mktWeather').checked?1:0, po:document.getElementById('mktPolitics').checked?1:0, cr:document.getElementById('mktCrypto').checked?1:0, f:document.getElementById('mktFinance').checked?1:0, cd:document.getElementById('conflictDetect').checked?1:0, dp:document.getElementById('dupePrevent').checked?1:0 };
+  history.replaceState(null, '', '#' + Object.entries(s).map(([k,v])=>k+'='+v).join('&'));
 }
-
 function loadSettingsFromHash() {
-  const hash = location.hash.slice(1);
-  if (!hash) return;
-  const p = {};
-  hash.split('&').forEach(pair => {
-    const [k,v] = pair.split('=');
-    p[k] = v;
-  });
-  if (p.e !== undefined) document.getElementById('botEnabled').checked = p.e === '1';
-  if (p.d) document.getElementById('dailyLimit').value = p.d;
-  if (p.p) document.getElementById('perTrade').value = p.p;
-  if (p.m) document.getElementById('maxTrades').value = p.m;
-  if (p.c) document.getElementById('minConf').value = p.c;
-  if (p.g) document.getElementById('minEdge').value = p.g;
-  if (p.w !== undefined) document.getElementById('mktWeather').checked = p.w === '1';
-  if (p.po !== undefined) document.getElementById('mktPolitics').checked = p.po === '1';
-  if (p.cr !== undefined) document.getElementById('mktCrypto').checked = p.cr === '1';
-  if (p.f !== undefined) document.getElementById('mktFinance').checked = p.f === '1';
-  if (p.cd !== undefined) document.getElementById('conflictDetect').checked = p.cd === '1';
-  if (p.dp !== undefined) document.getElementById('dupePrevent').checked = p.dp === '1';
-
-  // Update displayed values
-  document.getElementById('dailyLimitVal').textContent = '$' + (p.d || 25);
-  document.getElementById('perTradeVal').textContent = '$' + (p.p || 5);
-  document.getElementById('maxTradesVal').textContent = p.m || 6;
-  document.getElementById('minConfVal').textContent = (p.c || 70) + '%';
-  document.getElementById('minEdgeVal').textContent = (p.g || 10) + '%';
+  const hash = location.hash.slice(1); if (!hash) return;
+  const p = {}; hash.split('&').forEach(pair => { const [k,v] = pair.split('='); p[k]=v; });
+  if(p.e!==undefined) document.getElementById('botEnabled').checked = p.e==='1';
+  if(p.d) document.getElementById('dailyLimit').value = p.d;
+  if(p.p) document.getElementById('perTrade').value = p.p;
+  if(p.m) document.getElementById('maxTrades').value = p.m;
+  if(p.c) document.getElementById('minConf').value = p.c;
+  if(p.g) document.getElementById('minEdge').value = p.g;
+  if(p.w!==undefined) document.getElementById('mktWeather').checked = p.w==='1';
+  if(p.po!==undefined) document.getElementById('mktPolitics').checked = p.po==='1';
+  if(p.cr!==undefined) document.getElementById('mktCrypto').checked = p.cr==='1';
+  if(p.f!==undefined) document.getElementById('mktFinance').checked = p.f==='1';
+  if(p.cd!==undefined) document.getElementById('conflictDetect').checked = p.cd==='1';
+  if(p.dp!==undefined) document.getElementById('dupePrevent').checked = p.dp==='1';
+  document.getElementById('dailyLimitVal').textContent = '$'+(p.d||25);
+  document.getElementById('perTradeVal').textContent = '$'+(p.p||5);
+  document.getElementById('maxTradesVal').textContent = p.m||6;
+  document.getElementById('minConfVal').textContent = (p.c||70)+'%';
+  document.getElementById('minEdgeVal').textContent = (p.g||10)+'%';
   updateKillSwitch();
 }
-
-// Hook all settings inputs to auto-save
-document.querySelectorAll('#settings input').forEach(el => {
-  el.addEventListener('change', saveSettingsToHash);
-  el.addEventListener('input', saveSettingsToHash);
-});
-
-// Load saved settings, then render
+document.querySelectorAll('#settings input').forEach(el => { el.addEventListener('change', saveSettingsToHash); el.addEventListener('input', saveSettingsToHash); });
 loadSettingsFromHash();
 renderAll();
 window.addEventListener('resize', () => renderOverview());
